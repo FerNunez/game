@@ -30,7 +30,9 @@ set(INCLUDES
   include/components/player.h
   include/components/square_render.h
   include/components/collider.h
-
+  include/components/health.h
+  include/components/damage.h
+  include/components/shield.h
   
   include/systems/systems.h
   include/systems/physics.h
