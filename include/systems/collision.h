@@ -11,14 +11,14 @@
 class CollisionSystem : public System
 {
 public:
-    CollisionSystem(std::vector<std::shared_ptr<Entity>> entities)
+    CollisionSystem(std::vector<std::shared_ptr<Entity>>* entities)
       : m_entities(entities){};
 
     void Update(double dt) override
     {
-        for (int idx(0); idx < m_entities.size(); idx++)
+        for (int idx(0); idx < m_entities->size(); idx++)
         {
-            auto entity = m_entities[idx];
+            auto entity = (*m_entities)[idx];
             TransformComponent* transform_component = entity->GetComponent<TransformComponent>();
             ColliderComponent* collider_component = entity->GetComponent<ColliderComponent>();
 
@@ -31,9 +31,9 @@ public:
                 continue;
             }
 
-            for (int idx2(idx + 1); idx2 < m_entities.size(); idx2++)
+            for (int idx2(idx + 1); idx2 < m_entities->size(); idx2++)
             {
-                auto another_entity = m_entities[idx2];
+                auto another_entity = (*m_entities)[idx2];
 
                 TransformComponent* another_transform_component
                   = another_entity->GetComponent<TransformComponent>();
@@ -66,5 +66,5 @@ public:
     }
 
 private:
-    std::vector<std::shared_ptr<Entity>> m_entities;
+    std::vector<std::shared_ptr<Entity>>* m_entities;
 };

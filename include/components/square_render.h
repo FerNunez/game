@@ -8,13 +8,11 @@ class SquareRenderComponent : public Component
 {
 public:
     SquareRenderComponent(Entity& a_entity,
-                          SDL_Renderer* a_renderer,
                           bool a_visible,
                           double a_width,
                           double a_height,
                           const Color& a_color)
       : Component(a_entity)
-      , renderer(a_renderer)
       , visible(a_visible)
       , width(a_width)
       , height(a_height)
@@ -22,7 +20,6 @@ public:
 
     // to render
     bool visible;
-    SDL_Renderer* renderer;
 
     // more infor about rendering:
     // sprint?

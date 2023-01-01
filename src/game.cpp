@@ -14,9 +14,9 @@ Game::Game(SDL_Window* a_window)
   , renderer(nullptr)
 {
     /*Initialize member variables*/
-    renderer = SDL_CreateRenderer(window, -1, 0);
+    g_game_state.renderer = SDL_CreateRenderer(window, -1, 0);
 
-    if (renderer)
+    if (g_game_state.renderer)
     {
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
         SDL_RenderClear(renderer);
@@ -35,8 +35,7 @@ Game::Game(SDL_Window* a_window)
         enemy->AddComponent(transform);
 
         std::shared_ptr<SquareRenderComponent> square_render
-          = std::make_shared<SquareRenderComponent>(
-            *enemy, renderer, true, 16, 16, Color(255, 0, 0));
+          = std::make_shared<SquareRenderComponent>(*enemy, true, 16, 16, Color(255, 255, 0));
         enemy->AddComponent(square_render);
 
         std::shared_ptr<ColliderComponent> collider
@@ -57,8 +56,7 @@ Game::Game(SDL_Window* a_window)
         enemy2->AddComponent(transform);
 
         std::shared_ptr<SquareRenderComponent> square_render
-          = std::make_shared<SquareRenderComponent>(
-            *enemy2, renderer, true, 16, 16, Color(255, 0, 122));
+          = std::make_shared<SquareRenderComponent>(*enemy2, true, 16, 16, Color(255, 0, 122));
         enemy2->AddComponent(square_render);
 
         std::shared_ptr<ColliderComponent> collider
@@ -83,34 +81,45 @@ Game::Game(SDL_Window* a_window)
         player->AddComponent(transform);
 
         std::shared_ptr<SquareRenderComponent> square_render
-          = std::make_shared<SquareRenderComponent>(
-            *player, renderer, true, 16, 16, Color(0, 0, 255));
+          = std::make_shared<SquareRenderComponent>(*player, true, 16, 16, Color(0, 0, 255));
         player->AddComponent(square_render);
 
         std::shared_ptr<ColliderComponent> collider
           = std::make_shared<ColliderComponent>(*player, true, 16, 16);
         player->AddComponent(collider);
 
+        std::shared_ptr<Skill1Component> skill_1
+          = std::make_shared<Skill1Component>(*player, SkillType::FIRE, 2000);
+        player->AddComponent(skill_1);
+
+        std::shared_ptr<Skill2Component> skill_2
+          = std::make_shared<Skill2Component>(*player, SkillType::ICE, 500);
+        player->AddComponent(skill_2);
+
         entities.push_back(player);
     }
 
     // SYSTEMS UPDATE
     std::shared_ptr<PlayerBehaviorSystem> player_behavior_system
-      = std::make_shared<PlayerBehaviorSystem>(entities);
-    std::shared_ptr<PhysicsSystem> physics_system = std::make_shared<PhysicsSystem>(entities);
-    std::shared_ptr<CollisionSystem> collision_system = std::make_shared<CollisionSystem>(entities);
+      = std::make_shared<PlayerBehaviorSystem>(&entities);
+    std::shared_ptr<SkillGeneratorSystem> skill_generator
+      = std::make_shared<SkillGeneratorSystem>(&entities);
+    std::shared_ptr<PhysicsSystem> physics_system = std::make_shared<PhysicsSystem>(&entities);
+    std::shared_ptr<CollisionSystem> collision_system
+      = std::make_shared<CollisionSystem>(&entities);
 
     systems_update.push_back(player_behavior_system);
+    systems_update.push_back(skill_generator);
     systems_update.push_back(physics_system);
     systems_update.push_back(collision_system);
 
     // SYSTEM RENDER
-    std::shared_ptr<RendererSystem> renderer_system = std::make_shared<RendererSystem>(entities);
+    std::shared_ptr<RendererSystem> renderer_system = std::make_shared<RendererSystem>(&entities);
 
     systems_render.push_back(renderer_system);
 
     // Clearer
-    std::shared_ptr<CleanerSystem> clean_system = std::make_shared<CleanerSystem>(entities);
+    std::shared_ptr<CleanerSystem> clean_system = std::make_shared<CleanerSystem>(&entities);
     systems_render.push_back(clean_system);
 }
 
@@ -132,13 +141,6 @@ void Game::Update()
     /* handle input */
     InputHandler::handleInput();
 
-    std::cout << "Skill 1: " << g_game_state.skill_1 << std::endl;
-    std::cout << "Skill 2: " << g_game_state.skill_2 << std::endl;
-    std::cout << "Skill 3: " << g_game_state.skill_3 << std::endl;
-    std::cout << "Skill 4: " << g_game_state.skill_4 << std::endl;
-
-    std::cout << "Mouse position: (" << g_game_state.skill_mouse_position_x << ", "
-              << g_game_state.skill_mouse_position_x << ")" << std::endl;
     /* Updating */
     for (auto& system : systems_update)
     {
@@ -182,14 +184,14 @@ void Game::Render()
 
     //    SDL_RenderPresent(renderer);
 
-    SDL_RenderClear(renderer);
+    SDL_RenderClear(g_game_state.renderer);
 
     for (auto& system : systems_render)
     {
         system->Update(1);
     }
 
-    SDL_RenderPresent(renderer);
+    SDL_RenderPresent(g_game_state.renderer);
 
     // Drawing 2D or 3D graphics
     // Displaying text

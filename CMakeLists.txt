@@ -9,6 +9,9 @@ set(SOURCES
   main.cpp
   src/game.cpp
   src/input_handler.cpp
+
+  include/common/skills.cpp
+
 )
 
 # Add the include files
@@ -22,7 +25,7 @@ set(INCLUDES
   include/helper/color.h  
   include/helper/collide.h  
 
-
+  include/common/skills.h
 
   include/components/components.h
   include/components/transform.h
@@ -33,12 +36,17 @@ set(INCLUDES
   include/components/health.h
   include/components/damage.h
   include/components/shield.h
-  
+  include/components/skill1.h
+  include/components/skill2.h
+  include/components/skill3.h
+  include/components/skill4.h
+
   include/systems/systems.h
   include/systems/physics.h
   include/systems/player_behavior.h
   include/systems/renderer.h
   include/systems/collision.h
+  include/systems/skill_generator.h
   include/systems/clean.h
 
 )

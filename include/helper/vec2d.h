@@ -13,6 +13,10 @@ public:
     {
     }
 
+    Vec2D(const Vec2D& a_vec)
+      : x(a_vec.x)
+      , y(a_vec.y){};
+
     double x;
     double y;
 
@@ -29,11 +33,13 @@ public:
     }
 
     // Method to normalize the vector (scale it to have a length of 1)
-    void normalize()
+    Vec2D normalize() const
     {
-        double l = length();
-        x /= l;
-        y /= l;
+        Vec2D normalized(this->x, this->y);
+        double l = this->length();
+        normalized.x /= l;
+        normalized.y /= l;
+        return normalized;
     }
 
     // Addition operator for Vec2D

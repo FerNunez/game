@@ -1,8 +1,11 @@
 #pragma once
 #include "helper/vec2d.h"
+#include <SDL2/SDL.h>
 
 struct GameState
 {
+    SDL_Renderer* renderer;
+    //
 
     bool exit = 0;
 

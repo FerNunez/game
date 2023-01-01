@@ -11,12 +11,12 @@
 class RendererSystem : public System
 {
 public:
-    RendererSystem(std::vector<std::shared_ptr<Entity>> entities)
+    RendererSystem(std::vector<std::shared_ptr<Entity>>* entities)
       : m_entities(entities){};
 
     void Update(double dt) override
     {
-        for (auto entity : m_entities)
+        for (auto entity : *m_entities)
         {
             TransformComponent* transform_component = entity->GetComponent<TransformComponent>();
             SquareRenderComponent* square_render = entity->GetComponent<SquareRenderComponent>();
@@ -41,20 +41,20 @@ public:
             // Render the square.
 
             Uint8 r, g, b, a;
-            SDL_GetRenderDrawColor(square_render->renderer, &r, &g, &b, &a);
+            SDL_GetRenderDrawColor(g_game_state.renderer, &r, &g, &b, &a);
 
-            SDL_SetRenderDrawColor(square_render->renderer,
+            SDL_SetRenderDrawColor(g_game_state.renderer,
                                    square_render->color.r,
                                    square_render->color.g,
                                    square_render->color.b,
                                    square_render->color.alpha);
 
-            SDL_RenderFillRect(square_render->renderer, &rect);
+            SDL_RenderFillRect(g_game_state.renderer, &rect);
 
-            SDL_SetRenderDrawColor(square_render->renderer, r, g, b, a);
+            SDL_SetRenderDrawColor(g_game_state.renderer, r, g, b, a);
         }
     }
 
 private:
-    std::vector<std::shared_ptr<Entity>> m_entities;
+    std::vector<std::shared_ptr<Entity>>* m_entities;
 };

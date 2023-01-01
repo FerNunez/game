@@ -10,12 +10,12 @@
 class PhysicsSystem : public System
 {
 public:
-    PhysicsSystem(std::vector<std::shared_ptr<Entity>> entities)
+    PhysicsSystem(std::vector<std::shared_ptr<Entity>>* entities)
       : m_entities(entities){};
 
     void Update(double dt) override
     {
-        for (auto entity : m_entities)
+        for (auto entity : *m_entities)
         {
             TransformComponent* transform_component = entity->GetComponent<TransformComponent>();
             RigidBodyComponent* rigid_body_component = entity->GetComponent<RigidBodyComponent>();
@@ -35,5 +35,5 @@ public:
     }
 
 private:
-    std::vector<std::shared_ptr<Entity>> m_entities;
+    std::vector<std::shared_ptr<Entity>>* m_entities;
 };

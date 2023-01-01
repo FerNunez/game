@@ -10,12 +10,12 @@
 class CleanerSystem : public System
 {
 public:
-    CleanerSystem(std::vector<std::shared_ptr<Entity>> entities)
+    CleanerSystem(std::vector<std::shared_ptr<Entity>>* entities)
       : m_entities(entities){};
 
     void Update(double dt) override
     {
-        for (auto entity : m_entities)
+        for (auto entity : *m_entities)
         {
             ColliderComponent* collider_component = entity->GetComponent<ColliderComponent>();
 
@@ -29,5 +29,5 @@ public:
     }
 
 private:
-    std::vector<std::shared_ptr<Entity>> m_entities;
+    std::vector<std::shared_ptr<Entity>>* m_entities;
 };
