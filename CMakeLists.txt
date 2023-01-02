@@ -34,7 +34,8 @@ set(INCLUDES
   include/components/square_render.h
   include/components/collider.h
   include/components/health.h
-  include/components/damage.h
+  include/components/do_damage.h
+  include/components/suffer_damage.h
   include/components/shield.h
   include/components/skill1.h
   include/components/skill2.h

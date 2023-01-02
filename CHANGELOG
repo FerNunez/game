@@ -16,7 +16,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [Unreleased]
--
+- Add DestroyAfterHit component: # of hits before destroy. System will check if DestroyAfterHit count = 0=> destroy
+- Invulnerable Component: invulnerability duration, who entity who made this  
+
+
+## [Dev - 02/01/2023] - Better collision system
+### Added 
+- Collision group: React if different collision groups 
+- Components: Do damage (attacker) and suffer damage (receiver) 
+### Changed
+- collision system: add suffer damage to receiver if receiver have health and attacker do damage.
 
 
 ## [Dev - 01/01/2023] - Skill system

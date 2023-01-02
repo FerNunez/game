@@ -1,7 +1,4 @@
 #pragma once
-
-#include <cmath>
-
 #include "vec2d.h"
 
 bool Collide(const Vec2D& a_position_a,

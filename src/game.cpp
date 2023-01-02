@@ -39,8 +39,15 @@ Game::Game(SDL_Window* a_window)
         enemy->AddComponent(square_render);
 
         std::shared_ptr<ColliderComponent> collider
-          = std::make_shared<ColliderComponent>(*enemy, true, 16, 16);
+          = std::make_shared<ColliderComponent>(*enemy, true, 16, 16, CollisionGroup::ENEMY);
         enemy->AddComponent(collider);
+
+        std::shared_ptr<HealthComponent> health
+          = std::make_shared<HealthComponent>(*enemy, 100, 100);
+        enemy->AddComponent(health);
+
+        std::shared_ptr<DoDamageComponent> damage = std::make_shared<DoDamageComponent>(*enemy, 50);
+        enemy->AddComponent(damage);
 
         entities.push_back(enemy);
     }
@@ -60,8 +67,16 @@ Game::Game(SDL_Window* a_window)
         enemy2->AddComponent(square_render);
 
         std::shared_ptr<ColliderComponent> collider
-          = std::make_shared<ColliderComponent>(*enemy2, true, 16, 16);
+          = std::make_shared<ColliderComponent>(*enemy2, true, 16, 16, CollisionGroup::ENEMY);
         enemy2->AddComponent(collider);
+
+        std::shared_ptr<HealthComponent> health
+          = std::make_shared<HealthComponent>(*enemy2, 100, 100);
+        enemy2->AddComponent(health);
+
+        std::shared_ptr<DoDamageComponent> damage
+          = std::make_shared<DoDamageComponent>(*enemy2, 30);
+        enemy2->AddComponent(damage);
 
         entities.push_back(enemy2);
     }
@@ -80,12 +95,16 @@ Game::Game(SDL_Window* a_window)
           = std::make_shared<TransformComponent>(*player, Vec2D(0, 0), Vec2D(0, 0), Vec2D(0, 0));
         player->AddComponent(transform);
 
+        std::shared_ptr<HealthComponent> health
+          = std::make_shared<HealthComponent>(*player, 100, 100);
+        player->AddComponent(health);
+
         std::shared_ptr<SquareRenderComponent> square_render
           = std::make_shared<SquareRenderComponent>(*player, true, 16, 16, Color(0, 0, 255));
         player->AddComponent(square_render);
 
         std::shared_ptr<ColliderComponent> collider
-          = std::make_shared<ColliderComponent>(*player, true, 16, 16);
+          = std::make_shared<ColliderComponent>(*player, true, 16, 16, CollisionGroup::FRIEND);
         player->AddComponent(collider);
 
         std::shared_ptr<Skill1Component> skill_1
@@ -147,29 +166,21 @@ void Game::Update()
         system->Update(1);
     }
 
-    for (auto& entity : entities)
-    {
-        TransformComponent* transform_component = entity->GetComponent<TransformComponent>();
-        if (transform_component == nullptr)
-        {
-            continue;
-        }
-        std::cout << "x,y: " << transform_component->position << std::endl;
+    //    for (auto& entity : entities)
+    //    {
+    //        TransformComponent* transform_component = entity->GetComponent<TransformComponent>();
+    //        if (transform_component == nullptr)
+    //        {
+    //            continue;
+    //        }
+    //        std::cout << "x,y: " << transform_component->position << std::endl;
 
-        ColliderComponent* collide_component = entity->GetComponent<ColliderComponent>();
-        if (collide_component == nullptr)
-        {
-            continue;
-        }
-        if (collide_component->entities_collided_to.size())
-        {
-            for (auto entity_collided_to : collide_component->entities_collided_to)
-            {
-                std::cout << "Colliding: " << entity->name() << " with "
-                          << entity_collided_to->name() << std::endl;
-            }
-        }
-    }
+    //        ColliderComponent* collide_component = entity->GetComponent<ColliderComponent>();
+    //        if (collide_component == nullptr)
+    //        {
+    //            continue;
+    //        }
+    //    }
     //
     // Handling user input
     // Updating the positions of game objects

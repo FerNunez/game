@@ -23,8 +23,6 @@ public:
             {
                 continue;
             }
-
-            collider_component->entities_collided_to.clear();
         }
     }
 
