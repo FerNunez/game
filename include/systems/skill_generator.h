@@ -34,12 +34,12 @@ public:
             {
                 auto time_since_last_skill_ms
                   = std::chrono::duration_cast<std::chrono::milliseconds>(
-                      std::chrono::steady_clock::now() - skill1_component->timepoint)
+                      std::chrono::steady_clock::now() - skill1_component->last_call_timepoint)
                       .count();
                 if (g_game_state.skill_1
                     && time_since_last_skill_ms >= skill1_component->cooldown_duration_ms)
                 {
-                    skill1_component->timepoint = std::chrono::steady_clock::now();
+                    skill1_component->last_call_timepoint = std::chrono::steady_clock::now();
 
                     TransformComponent* transform_component
                       = entity->GetComponent<TransformComponent>();
@@ -53,12 +53,12 @@ public:
             {
                 auto time_since_last_skill_ms
                   = std::chrono::duration_cast<std::chrono::milliseconds>(
-                      std::chrono::steady_clock::now() - skill2_component->timepoint)
+                      std::chrono::steady_clock::now() - skill2_component->last_call_timepoint)
                       .count();
                 if (g_game_state.skill_2
                     && time_since_last_skill_ms >= skill2_component->cooldown_duration_ms)
                 {
-                    skill2_component->timepoint = std::chrono::steady_clock::now();
+                    skill2_component->last_call_timepoint = std::chrono::steady_clock::now();
 
                     TransformComponent* transform_component
                       = entity->GetComponent<TransformComponent>();

@@ -7,28 +7,33 @@
 #include "../helper/ecs.h"
 #include "../helper/vec2d.h"
 
-class CleanerSystem : public System
+class HealthDamageSystem : public System
 {
 public:
-    CleanerSystem(std::vector<std::shared_ptr<Entity>>* entities)
+    HealthDamageSystem(std::vector<std::shared_ptr<Entity>>* entities)
       : m_entities(entities){};
 
     void Update(double dt) override
     {
         for (auto entity : *m_entities)
         {
-            CollidedComponent* collided_component = entity->GetComponent<CollidedComponent>();
+            HealthComponent* health_component = entity->GetComponent<HealthComponent>();
             SufferDamageComponent* suffer_damage_component
               = entity->GetComponent<SufferDamageComponent>();
 
-            if (collided_component != nullptr)
+            if (health_component == nullptr)
             {
-                collided_component->entities_collided_with.clear();
+                continue;
             }
 
-            if (suffer_damage_component != nullptr)
+            if (suffer_damage_component == nullptr)
             {
-                suffer_damage_component->damage = 0;
+                continue;
+            }
+
+            if (suffer_damage_component->damage > 0)
+            {
+                health_component->current_health -= suffer_damage_component->damage;
             }
         }
     }

@@ -11,14 +11,14 @@ enum class CollisionGroup
     _NUM_COLLISION_GROUP
 };
 
-class ColliderComponent : public Component
+class CollidableComponent : public Component
 {
 public:
-    ColliderComponent(Entity& a_entity,
-                      bool a_collidable,
-                      double a_width,
-                      double a_height,
-                      CollisionGroup a_collision_group)
+    CollidableComponent(Entity& a_entity,
+                        bool a_collidable,
+                        double a_width,
+                        double a_height,
+                        CollisionGroup a_collision_group)
       : Component(a_entity)
       , collidable(a_collidable)
       , width(a_width)

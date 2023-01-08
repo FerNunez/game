@@ -30,12 +30,16 @@ std::shared_ptr<Entity> SkillGenerator::generateSkill(SkillType a_skill_effect, 
         projectil->AddComponent(square_render);
 
         // TODO: PASS COLLISION GROUP FROM ENTITY THAT  GENERATES THE SKILL?
-        std::shared_ptr<ColliderComponent> collider
-          = std::make_shared<ColliderComponent>(*projectil, true, 16, 16, CollisionGroup::FRIEND);
+        std::shared_ptr<CollidableComponent> collider
+          = std::make_shared<CollidableComponent>(*projectil, true, 16, 16, CollisionGroup::FRIEND);
         projectil->AddComponent(collider);
         std::shared_ptr<DoDamageComponent> damage
           = std::make_shared<DoDamageComponent>(*projectil, 10);
         projectil->AddComponent(damage);
+        std::shared_ptr<DestroyableAfterHitComponent> destroy_after_hit
+          = std::make_shared<DestroyableAfterHitComponent>(*projectil, 30);
+        projectil->AddComponent(destroy_after_hit);
+
         break;
     }
     case SkillType::ICE:
@@ -53,12 +57,15 @@ std::shared_ptr<Entity> SkillGenerator::generateSkill(SkillType a_skill_effect, 
         projectil->AddComponent(square_render);
 
         // TODO: PASS COLLISION GROUP FROM ENTITY THAT  GENERATES THE SKILL?
-        std::shared_ptr<ColliderComponent> collider
-          = std::make_shared<ColliderComponent>(*projectil, true, 16, 16, CollisionGroup::FRIEND);
+        std::shared_ptr<CollidableComponent> collider
+          = std::make_shared<CollidableComponent>(*projectil, true, 16, 16, CollisionGroup::FRIEND);
         projectil->AddComponent(collider);
         std::shared_ptr<DoDamageComponent> damage
-          = std::make_shared<DoDamageComponent>(*projectil, 10);
+          = std::make_shared<DoDamageComponent>(*projectil, 100);
         projectil->AddComponent(damage);
+        std::shared_ptr<DestroyableAfterHitComponent> destroy_after_hit
+          = std::make_shared<DestroyableAfterHitComponent>(*projectil, 1);
+        projectil->AddComponent(destroy_after_hit);
         break;
     }
     default:

@@ -16,17 +16,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [Unreleased]
-- Add DestroyAfterHit component: # of hits before destroy. System will check if DestroyAfterHit count = 0=> destroy
-- Invulnerable Component: invulnerability duration, who entity who made this  
+
+- Add ManagerEntity..
+- Add component manager.. remove components too..
+
+## [Dev - 08/01/2023] - Better collision system
+### Added
+- Component destroyable after hit, Invulnerabilit, Collided
+- System damage generator (add suffer damage if do damage present)
+- System destroyafterhit destroy element if afterhit is zero and destroy
+- System invulnerability applier(remove collision if invulnerable) and manager(removes or add invulnerability comp)
+- System health damage: Apply suffer damage to health
+- System destroy: id heatlh component <0, remove collision and 
+- Skills now are destroyable after hit and do damage
+
+### Chaged
+- Name for Component Collider into Collidable
+- Collision only adds component to entity collided with 
+- Collision system: add suffer damage to receiver if receiver have health and attacker do damage.
+- Clean system remove suffer damage
+- Alpha color is applied 
 
 
 ## [Dev - 02/01/2023] - Better collision system
 ### Added 
 - Collision group: React if different collision groups 
-- Components: Do damage (attacker) and suffer damage (receiver) 
-### Changed
-- collision system: add suffer damage to receiver if receiver have health and attacker do damage.
-
+- Components: Do damage (attacker) and suffer damage (receiver)
 
 ## [Dev - 01/01/2023] - Skill system
 ### Added 

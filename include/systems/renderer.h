@@ -30,6 +30,10 @@ public:
                 continue;
             }
 
+            if (!square_render->visible)
+            {
+                continue;
+            }
             // TODO: CONVERT FROM WOLRD TO IMAGE
 
             SDL_Rect rect
@@ -39,7 +43,7 @@ public:
                   static_cast<int>(square_render->height) };
 
             // Render the square.
-
+            SDL_SetRenderDrawBlendMode(g_game_state.renderer, SDL_BLENDMODE_BLEND);
             Uint8 r, g, b, a;
             SDL_GetRenderDrawColor(g_game_state.renderer, &r, &g, &b, &a);
 

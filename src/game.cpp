@@ -38,8 +38,8 @@ Game::Game(SDL_Window* a_window)
           = std::make_shared<SquareRenderComponent>(*enemy, true, 16, 16, Color(255, 255, 0));
         enemy->AddComponent(square_render);
 
-        std::shared_ptr<ColliderComponent> collider
-          = std::make_shared<ColliderComponent>(*enemy, true, 16, 16, CollisionGroup::ENEMY);
+        std::shared_ptr<CollidableComponent> collider
+          = std::make_shared<CollidableComponent>(*enemy, true, 16, 16, CollisionGroup::ENEMY);
         enemy->AddComponent(collider);
 
         std::shared_ptr<HealthComponent> health
@@ -63,11 +63,11 @@ Game::Game(SDL_Window* a_window)
         enemy2->AddComponent(transform);
 
         std::shared_ptr<SquareRenderComponent> square_render
-          = std::make_shared<SquareRenderComponent>(*enemy2, true, 16, 16, Color(255, 0, 122));
+          = std::make_shared<SquareRenderComponent>(*enemy2, true, 48, 96, Color(255, 0, 122));
         enemy2->AddComponent(square_render);
 
-        std::shared_ptr<ColliderComponent> collider
-          = std::make_shared<ColliderComponent>(*enemy2, true, 16, 16, CollisionGroup::ENEMY);
+        std::shared_ptr<CollidableComponent> collider
+          = std::make_shared<CollidableComponent>(*enemy2, true, 48, 96, CollisionGroup::ENEMY);
         enemy2->AddComponent(collider);
 
         std::shared_ptr<HealthComponent> health
@@ -103,8 +103,8 @@ Game::Game(SDL_Window* a_window)
           = std::make_shared<SquareRenderComponent>(*player, true, 16, 16, Color(0, 0, 255));
         player->AddComponent(square_render);
 
-        std::shared_ptr<ColliderComponent> collider
-          = std::make_shared<ColliderComponent>(*player, true, 16, 16, CollisionGroup::FRIEND);
+        std::shared_ptr<CollidableComponent> collider
+          = std::make_shared<CollidableComponent>(*player, true, 16, 16, CollisionGroup::FRIEND);
         player->AddComponent(collider);
 
         std::shared_ptr<Skill1Component> skill_1
@@ -124,13 +124,38 @@ Game::Game(SDL_Window* a_window)
     std::shared_ptr<SkillGeneratorSystem> skill_generator
       = std::make_shared<SkillGeneratorSystem>(&entities);
     std::shared_ptr<PhysicsSystem> physics_system = std::make_shared<PhysicsSystem>(&entities);
+
     std::shared_ptr<CollisionSystem> collision_system
       = std::make_shared<CollisionSystem>(&entities);
+
+    std::shared_ptr<InvurelnabilityApplierSystem> invulnerability_applier
+      = std::make_shared<InvurelnabilityApplierSystem>(&entities);
+
+    std::shared_ptr<DamageGeneratorSystem> damage_generator_system
+      = std::make_shared<DamageGeneratorSystem>(&entities);
+
+    std::shared_ptr<HealthDamageSystem> health_damage_system
+      = std::make_shared<HealthDamageSystem>(&entities);
+
+    std::shared_ptr<DestroyAfterHitSystem> destroy_after_hit_system
+      = std::make_shared<DestroyAfterHitSystem>(&entities);
+
+    std::shared_ptr<InvurelnabilityManagerSystem> invulnerability_manager
+      = std::make_shared<InvurelnabilityManagerSystem>(&entities);
+    std::shared_ptr<DestroySystem> destroy_system = std::make_shared<DestroySystem>(&entities);
 
     systems_update.push_back(player_behavior_system);
     systems_update.push_back(skill_generator);
     systems_update.push_back(physics_system);
     systems_update.push_back(collision_system);
+    systems_update.push_back(invulnerability_applier);
+
+    systems_update.push_back(damage_generator_system);
+    systems_update.push_back(health_damage_system);
+    systems_update.push_back(destroy_after_hit_system);
+    systems_update.push_back(invulnerability_manager);
+
+    systems_update.push_back(destroy_system);
 
     // SYSTEM RENDER
     std::shared_ptr<RendererSystem> renderer_system = std::make_shared<RendererSystem>(&entities);

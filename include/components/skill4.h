@@ -10,10 +10,10 @@ public:
       : Component(a_entity)
       , skill_type(a_skill_type)
       , cooldown_duration_ms(a_cooldown_duration_ms)
-      , timepoint(std::chrono::steady_clock::now()){};
+      , last_call_timepoint(std::chrono::steady_clock::now()){};
 
     SkillType skill_type;
     std::uint32_t cooldown_duration_ms;
 
-    std::chrono::time_point<std::chrono::steady_clock> timepoint;
+    std::chrono::time_point<std::chrono::steady_clock> last_call_timepoint;
 };

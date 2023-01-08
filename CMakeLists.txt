@@ -32,10 +32,16 @@ set(INCLUDES
   include/components/rigid_body.h
   include/components/player.h
   include/components/square_render.h
-  include/components/collider.h
+  include/components/collidable.h
+  include/components/collided.h
   include/components/health.h
   include/components/do_damage.h
   include/components/suffer_damage.h
+  include/components/destroyable_after_hit.h
+  include/components/invulnerability.h
+
+
+
   include/components/shield.h
   include/components/skill1.h
   include/components/skill2.h
@@ -47,7 +53,16 @@ set(INCLUDES
   include/systems/player_behavior.h
   include/systems/renderer.h
   include/systems/collision.h
+  include/systems/invulnerability_applier.h
+  include/systems/invulnerability_manager.h
+
   include/systems/skill_generator.h
+  include/systems/destroy.h
+  include/systems/damage_generator.h
+  include/systems/health_damage.h
+  include/systems/destroy_after_hit.h
+
+
   include/systems/clean.h
 
 )
