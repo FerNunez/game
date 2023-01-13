@@ -19,8 +19,8 @@ int main()
     SDL_Window* window = SDL_CreateWindow("My Game",               // window title
                                           SDL_WINDOWPOS_UNDEFINED, // initial x position
                                           SDL_WINDOWPOS_UNDEFINED, // initial y position
-                                          640,                     // width, in pixels
-                                          480,                     // height, in pixels
+                                          1280,                     // width, in pixels
+                                          920,                     // height, in pixels
                                           SDL_WINDOW_OPENGL        // flags - see below
     );
 

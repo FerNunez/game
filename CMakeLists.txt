@@ -11,6 +11,7 @@ set(SOURCES
   src/input_handler.cpp
 
   include/common/skills.cpp
+  include/common/AI.cpp
 
 )
 
@@ -26,6 +27,7 @@ set(INCLUDES
   include/helper/collide.h  
 
   include/common/skills.h
+  include/common/AI.h
 
   include/components/components.h
   include/components/transform.h

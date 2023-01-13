@@ -1,5 +1,7 @@
 #pragma once
 
+#include "AI_system.h"
+
 #include "collision.h"
 #include "physics.h"
 #include "player_behavior.h"

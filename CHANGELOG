@@ -17,13 +17,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Add AI element
+- Add AI attack if attack possible?
 - Add component manager.. remove components too..
+
+## [Dev - 13/01/2023] - Add AI base
+### Added
+- AI behavior class: small state machine: iddle-move-comeback-wait. 
+- AI system: only compute iteration about movement
+
 
 ## [Dev - 13/01/2023] - Add ManagerEntity
 ### Added
 - Entity Manager that creates entity and only increments id counter.
-
 
 ## [Dev - 08/01/2023] - Better collision system
 ### Added

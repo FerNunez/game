@@ -49,6 +49,10 @@ Game::Game(SDL_Window* a_window)
         std::shared_ptr<DoDamageComponent> damage = std::make_shared<DoDamageComponent>(*enemy, 50);
         enemy->AddComponent(damage);
 
+        std::shared_ptr<AIBehaviorComponent> ai
+          = std::make_shared<AIBehaviorComponent>(*enemy, AIBehaviorType::RANDOM);
+        enemy->AddComponent(ai);
+
         entities.push_back(enemy);
     }
 
@@ -122,6 +126,7 @@ Game::Game(SDL_Window* a_window)
     // SYSTEMS UPDATE
     std::shared_ptr<PlayerBehaviorSystem> player_behavior_system
       = std::make_shared<PlayerBehaviorSystem>(&entities);
+    std::shared_ptr<AISystem> ai_behavior_system = std::make_shared<AISystem>(&entities);
 
     std::shared_ptr<SkillGeneratorSystem> skill_generator
       = std::make_shared<SkillGeneratorSystem>(&entities);
@@ -147,6 +152,7 @@ Game::Game(SDL_Window* a_window)
     std::shared_ptr<DestroySystem> destroy_system = std::make_shared<DestroySystem>(&entities);
 
     systems_update.push_back(player_behavior_system);
+    systems_update.push_back(ai_behavior_system);
 
     systems_update.push_back(skill_generator);
     systems_update.push_back(physics_system);

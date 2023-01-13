@@ -30,7 +30,7 @@ public:
             }
 
             transform_component->position
-              = transform_component->position + rigid_body_component->velocity * dt;
+              = transform_component->position + rigid_body_component->velocity * 2 * dt;
         }
     }
 

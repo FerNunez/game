@@ -11,6 +11,7 @@
 #include "square_render.h"
 #include "suffer_damage.h"
 #include "transform.h"
+#include "AI_behavior.h"
 
 #include "skill1.h"
 #include "skill2.h"
