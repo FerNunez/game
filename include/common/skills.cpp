@@ -4,9 +4,7 @@
 
 std::shared_ptr<Entity> SkillGenerator::generateSkill(SkillType a_skill_effect, const Vec2D& origin)
 {
-
-    std::shared_ptr<Entity> projectil = std::make_shared<Entity>(10, "Projectil");
-
+    std::shared_ptr<Entity> projectil = g_game_state.m_entity_manager.CreateEntity("Projectil");
     {
         std::shared_ptr<TransformComponent> transform = std::make_shared<TransformComponent>(
           *projectil, Vec2D(origin.x, origin.y), Vec2D(0, 0), Vec2D(0, 0));
@@ -22,7 +20,7 @@ std::shared_ptr<Entity> SkillGenerator::generateSkill(SkillType a_skill_effect, 
             - Vec2D(origin.x, origin.y);
         Vec2D direction_norm = direction.normalize();
         std::shared_ptr<RigidBodyComponent> rigid_body
-          = std::make_shared<RigidBodyComponent>(*projectil, direction_norm, Vec2D(0, 0));
+          = std::make_shared<RigidBodyComponent>(*projectil, direction_norm * 5, Vec2D(0, 0));
         projectil->AddComponent(rigid_body);
 
         std::shared_ptr<SquareRenderComponent> square_render
@@ -49,7 +47,7 @@ std::shared_ptr<Entity> SkillGenerator::generateSkill(SkillType a_skill_effect, 
             - Vec2D(origin.x, origin.y);
         Vec2D direction_norm = direction.normalize();
         std::shared_ptr<RigidBodyComponent> rigid_body
-          = std::make_shared<RigidBodyComponent>(*projectil, direction_norm * 1.5, Vec2D(0, 0));
+          = std::make_shared<RigidBodyComponent>(*projectil, direction_norm * 7.5, Vec2D(0, 0));
         projectil->AddComponent(rigid_body);
 
         std::shared_ptr<SquareRenderComponent> square_render

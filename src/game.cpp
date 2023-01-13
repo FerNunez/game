@@ -24,7 +24,7 @@ Game::Game(SDL_Window* a_window)
 
     /* Entities and components */
     // enemys
-    std::shared_ptr<Entity> enemy = std::make_shared<Entity>(1, "Enemy");
+    std::shared_ptr<Entity> enemy = g_game_state.m_entity_manager.CreateEntity("Enemy");
     {
         std::shared_ptr<RigidBodyComponent> rigid_body
           = std::make_shared<RigidBodyComponent>(*enemy, Vec2D(0, 0), Vec2D(0, 0));
@@ -52,7 +52,8 @@ Game::Game(SDL_Window* a_window)
         entities.push_back(enemy);
     }
 
-    std::shared_ptr<Entity> enemy2 = std::make_shared<Entity>(2, "Enemy2");
+    std::shared_ptr<Entity> enemy2 = g_game_state.m_entity_manager.CreateEntity("Enemy2");
+
     {
         std::shared_ptr<RigidBodyComponent> rigid_body
           = std::make_shared<RigidBodyComponent>(*enemy2, Vec2D(0, 0), Vec2D(0, 0));
@@ -82,7 +83,7 @@ Game::Game(SDL_Window* a_window)
     }
 
     // player
-    std::shared_ptr<Entity> player = std::make_shared<Entity>(0, "Ferni");
+    std::shared_ptr<Entity> player = g_game_state.m_entity_manager.CreateEntity("player");
     {
         std::shared_ptr<PlayerComponent> player_comp = std::make_shared<PlayerComponent>(*player);
         player->AddComponent(player_comp);
@@ -121,6 +122,7 @@ Game::Game(SDL_Window* a_window)
     // SYSTEMS UPDATE
     std::shared_ptr<PlayerBehaviorSystem> player_behavior_system
       = std::make_shared<PlayerBehaviorSystem>(&entities);
+
     std::shared_ptr<SkillGeneratorSystem> skill_generator
       = std::make_shared<SkillGeneratorSystem>(&entities);
     std::shared_ptr<PhysicsSystem> physics_system = std::make_shared<PhysicsSystem>(&entities);
@@ -145,6 +147,7 @@ Game::Game(SDL_Window* a_window)
     std::shared_ptr<DestroySystem> destroy_system = std::make_shared<DestroySystem>(&entities);
 
     systems_update.push_back(player_behavior_system);
+
     systems_update.push_back(skill_generator);
     systems_update.push_back(physics_system);
     systems_update.push_back(collision_system);

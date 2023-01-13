@@ -93,3 +93,16 @@ public:
     // Update function for the System
     virtual void Update(double dt) = 0;
 };
+
+class EntityManager
+{
+public:
+    std::shared_ptr<Entity> CreateEntity(std::string name)
+    {
+        std::shared_ptr<Entity> entity = std::make_shared<Entity>(id++, name);
+        return entity;
+    };
+
+private:
+    std::uint64_t id{ 0 };
+};

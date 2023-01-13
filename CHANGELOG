@@ -17,8 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Add ManagerEntity..
+- Add AI element
 - Add component manager.. remove components too..
+
+## [Dev - 13/01/2023] - Add ManagerEntity
+### Added
+- Entity Manager that creates entity and only increments id counter.
+
 
 ## [Dev - 08/01/2023] - Better collision system
 ### Added

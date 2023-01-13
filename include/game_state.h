@@ -1,4 +1,5 @@
 #pragma once
+#include "helper/ecs.h"
 #include "helper/vec2d.h"
 #include <SDL2/SDL.h>
 
@@ -26,6 +27,8 @@ struct GameState
     bool skill_4 = 0;
 
     bool velocity_constant = 1;
+
+    EntityManager m_entity_manager;
 };
 
 extern GameState g_game_state;
