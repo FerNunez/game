@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AI_behavior.h"
 #include "collidable.h"
 #include "collided.h"
 #include "destroyable_after_hit.h"
@@ -11,7 +12,8 @@
 #include "square_render.h"
 #include "suffer_damage.h"
 #include "transform.h"
-#include "AI_behavior.h"
+
+#include "enemy_spawner.h"
 
 #include "skill1.h"
 #include "skill2.h"

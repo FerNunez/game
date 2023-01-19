@@ -20,11 +20,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add AI attack if attack possible?
 - Add component manager.. remove components too..
 
+## [Dev - 19/01/2023] - Add Enemy Spawner
+### Added
+- EnemySpawner Component: Add to entity if spawn enemies around 
+- EnemySpawning System: Spawn enemies around entity
+### Fixed
+- Changed 
+- AI random seed
+### Changed
+- Keys to move player changed from left,up,down,right to qzsd
+
 ## [Dev - 13/01/2023] - Add AI base
 ### Added
 - AI behavior class: small state machine: iddle-move-comeback-wait. 
 - AI system: only compute iteration about movement
-
 
 ## [Dev - 13/01/2023] - Add ManagerEntity
 ### Added

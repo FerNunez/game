@@ -14,6 +14,8 @@
 #include "invulnerability_applier.h"
 #include "invulnerability_manager.h"
 
+#include "enemy_spawning.h"
+
 #include "destroy.h"
 #include "health_damage.h"
 

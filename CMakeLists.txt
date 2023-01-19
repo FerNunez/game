@@ -41,6 +41,7 @@ set(INCLUDES
   include/components/suffer_damage.h
   include/components/destroyable_after_hit.h
   include/components/invulnerability.h
+  include/components/enemy_spawner.h
 
 
 
@@ -57,6 +58,9 @@ set(INCLUDES
   include/systems/collision.h
   include/systems/invulnerability_applier.h
   include/systems/invulnerability_manager.h
+  include/systems/enemy_spawning.h
+
+
 
   include/systems/skill_generator.h
   include/systems/destroy.h

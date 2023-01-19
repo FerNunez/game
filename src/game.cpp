@@ -96,8 +96,8 @@ Game::Game(SDL_Window* a_window)
           = std::make_shared<RigidBodyComponent>(*player, Vec2D(0, 0), Vec2D(0, 0));
         player->AddComponent(rigid_body);
 
-        std::shared_ptr<TransformComponent> transform
-          = std::make_shared<TransformComponent>(*player, Vec2D(0, 0), Vec2D(0, 0), Vec2D(0, 0));
+        std::shared_ptr<TransformComponent> transform = std::make_shared<TransformComponent>(
+          *player, Vec2D(250, 400), Vec2D(0, 0), Vec2D(0, 0));
         player->AddComponent(transform);
 
         std::shared_ptr<HealthComponent> health
@@ -120,12 +120,20 @@ Game::Game(SDL_Window* a_window)
           = std::make_shared<Skill2Component>(*player, SkillType::ICE, 500);
         player->AddComponent(skill_2);
 
+        std::shared_ptr<EnemySpawnerComponent> enemy_spawner
+          = std::make_shared<EnemySpawnerComponent>(*player, 3, 10000);
+        player->AddComponent(enemy_spawner);
+
         entities.push_back(player);
     }
 
     // SYSTEMS UPDATE
     std::shared_ptr<PlayerBehaviorSystem> player_behavior_system
       = std::make_shared<PlayerBehaviorSystem>(&entities);
+
+    std::shared_ptr<EnemySpawningSystem> enemy_spawning_system
+      = std::make_shared<EnemySpawningSystem>(&entities);
+
     std::shared_ptr<AISystem> ai_behavior_system = std::make_shared<AISystem>(&entities);
 
     std::shared_ptr<SkillGeneratorSystem> skill_generator
@@ -152,6 +160,8 @@ Game::Game(SDL_Window* a_window)
     std::shared_ptr<DestroySystem> destroy_system = std::make_shared<DestroySystem>(&entities);
 
     systems_update.push_back(player_behavior_system);
+    systems_update.push_back(enemy_spawning_system);
+
     systems_update.push_back(ai_behavior_system);
 
     systems_update.push_back(skill_generator);

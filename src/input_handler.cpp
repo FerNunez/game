@@ -14,16 +14,16 @@ void InputHandler::handleInput()
         case SDL_KEYDOWN:
             switch (event.key.keysym.sym)
             {
-            case SDLK_LEFT:
+            case SDLK_q:
                 g_game_state.move_left = 1;
                 break;
-            case SDLK_RIGHT:
+            case SDLK_d:
                 g_game_state.move_right = 1;
                 break;
-            case SDLK_UP:
+            case SDLK_z:
                 g_game_state.move_up = 1;
                 break;
-            case SDLK_DOWN:
+            case SDLK_s:
                 g_game_state.move_down = 1;
                 break;
 
@@ -59,16 +59,16 @@ void InputHandler::handleInput()
         case SDL_KEYUP:
             switch (event.key.keysym.sym)
             {
-            case SDLK_LEFT:
+            case SDLK_q:
                 g_game_state.move_left = 0;
                 break;
-            case SDLK_RIGHT:
+            case SDLK_d:
                 g_game_state.move_right = 0;
                 break;
-            case SDLK_UP:
+            case SDLK_z:
                 g_game_state.move_up = 0;
                 break;
-            case SDLK_DOWN:
+            case SDLK_s:
                 g_game_state.move_down = 0;
                 break;
             case SDLK_1:

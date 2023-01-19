@@ -8,7 +8,7 @@ AI::AI(AIBehaviorType a_behavior)
   , deplacement(Vec2D(0, 0))
   , time_point(std::chrono::steady_clock::now())
 {
-
+    generator.seed(std::random_device()());
     distribution = std::normal_distribution<double>(0, 5);
 }
 
@@ -18,7 +18,6 @@ void AI::computeIteration(TransformComponent* a_tranform_component,
     Vec2D point_A(10, 10);
     Vec2D point_B(-10, 0);
 
-    std::cout << "disstance " << computeDistance(point_A, point_B) << std::endl;
     // CASE RANDOM
     switch (current_state)
     {
