@@ -1,33 +1,41 @@
 #pragma once
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
-#include "../helper/color.h"
+#include "../game_state.h"
 #include "../helper/ecs.h"
+#include "../helper/vec2d.h"
 
 class SpriteRenderComponent : public Component
 {
 public:
     SpriteRenderComponent(Entity& a_entity,
-                          SDL_Renderer* a_renderer,
                           bool a_visible,
-                          string a_sprite,
+                          std::string a_sprite_path,
                           double a_width,
                           double a_height,
-                          const Color& a_color)
+                          const Vec2D& a_scale)
       : Component(a_entity)
-      , renderer(a_renderer)
       , visible(a_visible)
       , width(a_width)
       , height(a_height)
-      , color(a_color){};
+      , scale(a_scale)
+    {
+
+        SDL_Surface* spriteSurface = IMG_Load(a_sprite_path.c_str());
+        sprite_texture = SDL_CreateTextureFromSurface(g_game_state.renderer, spriteSurface);
+        SDL_FreeSurface(spriteSurface);
+    };
+
+    ~SpriteRenderComponent()
+    {
+        SDL_DestroyTexture(sprite_texture);
+    }
 
     // to render
     bool visible;
-    SDL_Renderer* renderer;
-
-    // more infor about rendering:
-    // sprint?
+    SDL_Texture* sprite_texture;
     double width;
     double height;
-    Color color;
+    Vec2D scale;
 };

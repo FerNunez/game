@@ -23,6 +23,7 @@ public:
 
     // more infor about rendering:
     // sprint?
+
     double width;
     double height;
     Color color;

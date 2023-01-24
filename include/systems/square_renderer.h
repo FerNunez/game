@@ -8,10 +8,10 @@
 #include "../helper/ecs.h"
 #include "../helper/vec2d.h"
 
-class RendererSystem : public System
+class SquareRendererSystem : public System
 {
 public:
-    RendererSystem(std::vector<std::shared_ptr<Entity>>* entities)
+    SquareRendererSystem(std::vector<std::shared_ptr<Entity>>* entities)
       : m_entities(entities){};
 
     void Update(double dt) override

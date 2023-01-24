@@ -10,6 +10,7 @@ enum class SkillType
     ICE,
     LIGHT,
     WIND,
+    SWORD,
     _NUM_SKILL_TYPE
 };
 

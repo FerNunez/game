@@ -5,16 +5,11 @@
 class TransformComponent : public Component
 {
 public:
-    TransformComponent(Entity& a_entity,
-                       const Vec2D& a_position,
-                       const Vec2D& a_rotation,
-                       const Vec2D& a_scale)
+    TransformComponent(Entity& a_entity, const Vec2D& a_position, double a_rotation_z)
       : Component(a_entity)
       , position(a_position)
-      , rotation(a_rotation)
-      , scale(a_scale){};
+      , rotation_z(a_rotation_z){};
 
     Vec2D position;
-    Vec2D rotation;
-    Vec2D scale;
+    double rotation_z;
 };

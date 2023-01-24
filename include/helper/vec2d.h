@@ -54,6 +54,12 @@ public:
         return Vec2D(x - other.x, y - other.y);
     }
 
+    // Subtraction operator for Vec2D
+    Vec2D operator*(const Vec2D& other) const
+    {
+        return Vec2D(x * other.x, y * other.y);
+    }
+
     // Multiplication operator for Vec2D
     Vec2D operator*(double scalar) const
     {

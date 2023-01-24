@@ -17,27 +17,38 @@ public:
     {
         for (auto entity : *m_entities)
         {
-            DestroyableAfterHitComponent* destroyable_after_hit_component = entity->GetComponent<DestroyableAfterHitComponent>();
+            DestroyableAfterHitComponent* destroyable_after_hit_component
+              = entity->GetComponent<DestroyableAfterHitComponent>();
             CollidedComponent* collided_component = entity->GetComponent<CollidedComponent>();
-            SquareRenderComponent* square_render_component = entity->GetComponent<SquareRenderComponent>();
+            SquareRenderComponent* square_render_component
+              = entity->GetComponent<SquareRenderComponent>();
+            SpriteRenderComponent* sprite_render_component
+              = entity->GetComponent<SpriteRenderComponent>();
+
             CollidableComponent* collidable_component = entity->GetComponent<CollidableComponent>();
 
-            if (destroyable_after_hit_component == nullptr || collided_component == nullptr || collidable_component == nullptr)
+            if (destroyable_after_hit_component == nullptr || collided_component == nullptr
+                || collidable_component == nullptr)
             {
                 continue;
             }
 
-            destroyable_after_hit_component->number_remaining_hits_before_die -= collided_component->entities_collided_with.size();
-            
-            if(destroyable_after_hit_component->number_remaining_hits_before_die <= 0)
+            destroyable_after_hit_component->number_remaining_hits_before_die
+              -= collided_component->entities_collided_with.size();
+
+            if (destroyable_after_hit_component->number_remaining_hits_before_die <= 0)
             {
                 collidable_component->collidable = false;
 
-                if( square_render_component != nullptr)
+                if (square_render_component != nullptr)
                 {
-                    square_render_component->visible = false; 
+                    square_render_component->visible = false;
                 }
 
+                if (sprite_render_component != nullptr)
+                {
+                    sprite_render_component->visible = false;
+                }
             }
         }
     }

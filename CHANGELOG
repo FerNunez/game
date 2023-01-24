@@ -22,6 +22,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Dev - 19/01/2023] - Add Enemy Spawner
 ### Added
+- Sprite render
+- Sword attack skill (small rectangle rotated to mouse click)
+### Changed
+- Scale passed to sprite 
+
+
+## [Dev - 19/01/2023] - Add Enemy Spawner
+### Added
 - EnemySpawner Component: Add to entity if spawn enemies around 
 - EnemySpawning System: Spawn enemies around entity
 ### Fixed

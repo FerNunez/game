@@ -33,7 +33,10 @@ set(INCLUDES
   include/components/transform.h
   include/components/rigid_body.h
   include/components/player.h
+
   include/components/square_render.h
+  include/components/sprite_render.h
+
   include/components/collidable.h
   include/components/collided.h
   include/components/health.h
@@ -42,6 +45,7 @@ set(INCLUDES
   include/components/destroyable_after_hit.h
   include/components/invulnerability.h
   include/components/enemy_spawner.h
+  include/components/destroyable_by_time.h
 
 
 
@@ -54,7 +58,9 @@ set(INCLUDES
   include/systems/systems.h
   include/systems/physics.h
   include/systems/player_behavior.h
-  include/systems/renderer.h
+  include/systems/square_renderer.h
+  include/systems/sprite_renderer.h
+
   include/systems/collision.h
   include/systems/invulnerability_applier.h
   include/systems/invulnerability_manager.h
@@ -67,6 +73,7 @@ set(INCLUDES
   include/systems/damage_generator.h
   include/systems/health_damage.h
   include/systems/destroy_after_hit.h
+  include/systems/destroying_by_time.h
 
 
   include/systems/clean.h
@@ -76,10 +83,10 @@ set(INCLUDES
 # Add the executable
 add_executable(MyProject ${SOURCES} ${INCLUDES})
 
-# Add any library dependencies
-#target_link_libraries(MyProject mylib1 mylib2)
+INCLUDE(FindPkgConfig)
 
-find_package(SDL2 REQUIRED)
+PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
 
-include_directories(${SDL2_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES})

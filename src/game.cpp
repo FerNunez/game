@@ -14,12 +14,11 @@ Game::Game(SDL_Window* a_window)
   , renderer(nullptr)
 {
     /*Initialize member variables*/
-    g_game_state.renderer = SDL_CreateRenderer(window, -1, 0);
+    g_game_state.renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     if (g_game_state.renderer)
     {
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-        SDL_RenderClear(renderer);
     }
 
     /* Entities and components */
@@ -31,7 +30,7 @@ Game::Game(SDL_Window* a_window)
         enemy->AddComponent(rigid_body);
 
         std::shared_ptr<TransformComponent> transform
-          = std::make_shared<TransformComponent>(*enemy, Vec2D(320, 140), Vec2D(0, 0), Vec2D(0, 0));
+          = std::make_shared<TransformComponent>(*enemy, Vec2D(320, 140), 0.0);
         enemy->AddComponent(transform);
 
         std::shared_ptr<SquareRenderComponent> square_render
@@ -49,41 +48,7 @@ Game::Game(SDL_Window* a_window)
         std::shared_ptr<DoDamageComponent> damage = std::make_shared<DoDamageComponent>(*enemy, 50);
         enemy->AddComponent(damage);
 
-        std::shared_ptr<AIBehaviorComponent> ai
-          = std::make_shared<AIBehaviorComponent>(*enemy, AIBehaviorType::RANDOM);
-        enemy->AddComponent(ai);
-
         entities.push_back(enemy);
-    }
-
-    std::shared_ptr<Entity> enemy2 = g_game_state.m_entity_manager.CreateEntity("Enemy2");
-
-    {
-        std::shared_ptr<RigidBodyComponent> rigid_body
-          = std::make_shared<RigidBodyComponent>(*enemy2, Vec2D(0, 0), Vec2D(0, 0));
-        enemy2->AddComponent(rigid_body);
-
-        std::shared_ptr<TransformComponent> transform = std::make_shared<TransformComponent>(
-          *enemy2, Vec2D(250, 140), Vec2D(0, 0), Vec2D(0, 0));
-        enemy2->AddComponent(transform);
-
-        std::shared_ptr<SquareRenderComponent> square_render
-          = std::make_shared<SquareRenderComponent>(*enemy2, true, 48, 96, Color(255, 0, 122));
-        enemy2->AddComponent(square_render);
-
-        std::shared_ptr<CollidableComponent> collider
-          = std::make_shared<CollidableComponent>(*enemy2, true, 48, 96, CollisionGroup::ENEMY);
-        enemy2->AddComponent(collider);
-
-        std::shared_ptr<HealthComponent> health
-          = std::make_shared<HealthComponent>(*enemy2, 100, 100);
-        enemy2->AddComponent(health);
-
-        std::shared_ptr<DoDamageComponent> damage
-          = std::make_shared<DoDamageComponent>(*enemy2, 30);
-        enemy2->AddComponent(damage);
-
-        entities.push_back(enemy2);
     }
 
     // player
@@ -96,8 +61,8 @@ Game::Game(SDL_Window* a_window)
           = std::make_shared<RigidBodyComponent>(*player, Vec2D(0, 0), Vec2D(0, 0));
         player->AddComponent(rigid_body);
 
-        std::shared_ptr<TransformComponent> transform = std::make_shared<TransformComponent>(
-          *player, Vec2D(250, 400), Vec2D(0, 0), Vec2D(0, 0));
+        std::shared_ptr<TransformComponent> transform
+          = std::make_shared<TransformComponent>(*player, Vec2D(250, 400), 0.0);
         player->AddComponent(transform);
 
         std::shared_ptr<HealthComponent> health
@@ -119,6 +84,10 @@ Game::Game(SDL_Window* a_window)
         std::shared_ptr<Skill2Component> skill_2
           = std::make_shared<Skill2Component>(*player, SkillType::ICE, 500);
         player->AddComponent(skill_2);
+
+        std::shared_ptr<Skill3Component> skill_3
+          = std::make_shared<Skill3Component>(*player, SkillType::SWORD, 100);
+        player->AddComponent(skill_3);
 
         std::shared_ptr<EnemySpawnerComponent> enemy_spawner
           = std::make_shared<EnemySpawnerComponent>(*player, 3, 10000);
@@ -155,6 +124,9 @@ Game::Game(SDL_Window* a_window)
     std::shared_ptr<DestroyAfterHitSystem> destroy_after_hit_system
       = std::make_shared<DestroyAfterHitSystem>(&entities);
 
+    std::shared_ptr<DestroyByTimeSystem> destroy_by_time_system
+      = std::make_shared<DestroyByTimeSystem>(&entities);
+
     std::shared_ptr<InvurelnabilityManagerSystem> invulnerability_manager
       = std::make_shared<InvurelnabilityManagerSystem>(&entities);
     std::shared_ptr<DestroySystem> destroy_system = std::make_shared<DestroySystem>(&entities);
@@ -172,14 +144,20 @@ Game::Game(SDL_Window* a_window)
     systems_update.push_back(damage_generator_system);
     systems_update.push_back(health_damage_system);
     systems_update.push_back(destroy_after_hit_system);
+    systems_update.push_back(destroy_by_time_system);
+
     systems_update.push_back(invulnerability_manager);
 
     systems_update.push_back(destroy_system);
 
     // SYSTEM RENDER
-    std::shared_ptr<RendererSystem> renderer_system = std::make_shared<RendererSystem>(&entities);
+    std::shared_ptr<SquareRendererSystem> square_renderer_system
+      = std::make_shared<SquareRendererSystem>(&entities);
+    std::shared_ptr<SpriteRendererSystem> sprite_renderer_system
+      = std::make_shared<SpriteRendererSystem>(&entities);
 
-    systems_render.push_back(renderer_system);
+    systems_render.push_back(square_renderer_system);
+    systems_render.push_back(sprite_renderer_system);
 
     // Clearer
     std::shared_ptr<CleanerSystem> clean_system = std::make_shared<CleanerSystem>(&entities);

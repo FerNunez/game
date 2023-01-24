@@ -24,8 +24,10 @@ public:
             }
             Skill1Component* skill1_component = entity->GetComponent<Skill1Component>();
             Skill2Component* skill2_component = entity->GetComponent<Skill2Component>();
+            Skill3Component* skill3_component = entity->GetComponent<Skill3Component>();
 
-            if (skill1_component == nullptr && skill2_component == nullptr)
+            if (skill1_component == nullptr && skill2_component == nullptr
+                && skill3_component == nullptr)
             {
                 continue;
             }
@@ -64,6 +66,25 @@ public:
                       = entity->GetComponent<TransformComponent>();
                     std::shared_ptr<Entity> projectil = SkillGenerator::generateSkill(
                       skill2_component->skill_type, transform_component->position);
+                    m_entities->push_back(projectil);
+                }
+            }
+
+            if (skill3_component != nullptr)
+            {
+                auto time_since_last_skill_ms
+                  = std::chrono::duration_cast<std::chrono::milliseconds>(
+                      std::chrono::steady_clock::now() - skill3_component->last_call_timepoint)
+                      .count();
+                if (g_game_state.skill_3
+                    && time_since_last_skill_ms >= skill3_component->cooldown_duration_ms)
+                {
+                    skill3_component->last_call_timepoint = std::chrono::steady_clock::now();
+
+                    TransformComponent* transform_component
+                      = entity->GetComponent<TransformComponent>();
+                    std::shared_ptr<Entity> projectil = SkillGenerator::generateSkill(
+                      skill3_component->skill_type, transform_component->position);
                     m_entities->push_back(projectil);
                 }
             }

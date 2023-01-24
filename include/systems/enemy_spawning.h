@@ -53,7 +53,7 @@ public:
 
                     std::shared_ptr<TransformComponent> enemy_transform_component
                       = std::make_shared<TransformComponent>(
-                        *enemy, transform_component->position, Vec2D(0, 0), Vec2D(0, 0));
+                        *enemy, transform_component->position, 0.0);
                     enemy->AddComponent(enemy_transform_component);
 
                     std::shared_ptr<SquareRenderComponent> enemy_square_render_component
