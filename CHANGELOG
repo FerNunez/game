@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Sprite render
 - Sword attack skill (small rectangle rotated to mouse click)
+- Destroyable by time: destroyed after some time
 ### Changed
 - Scale passed to sprite 
 

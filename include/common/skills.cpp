@@ -58,7 +58,7 @@ std::shared_ptr<Entity> SkillGenerator::generateSkill(SkillType a_skill_effect, 
           = std::make_shared<CollidableComponent>(*projectil, true, 16, 16, CollisionGroup::FRIEND);
         projectil->AddComponent(collider);
         std::shared_ptr<DoDamageComponent> damage
-          = std::make_shared<DoDamageComponent>(*projectil, 100);
+          = std::make_shared<DoDamageComponent>(*projectil, 10);
         projectil->AddComponent(damage);
         std::shared_ptr<DestroyableAfterHitComponent> destroy_after_hit
           = std::make_shared<DestroyableAfterHitComponent>(*projectil, 1);
@@ -78,20 +78,15 @@ std::shared_ptr<Entity> SkillGenerator::generateSkill(SkillType a_skill_effect, 
           = std::make_shared<RigidBodyComponent>(*projectil, Vec2D(0, 0), Vec2D(0, 0));
         projectil->AddComponent(rigid_body);
 
-        //        std::shared_ptr<SquareRenderComponent> squere_render
-        //          = std::make_shared<SquareRenderComponent>(*projectil, true, 24, 32, Color(100,
-        //          100, 100));
-        //        projectil->AddComponent(squere_render);
-
         std::shared_ptr<SpriteRenderComponent> sprite_render
           = std::make_shared<SpriteRenderComponent>(
             *projectil, true, "../assets/pink_square.png", 16, 16, Vec2D(4, 1));
         projectil->AddComponent(sprite_render);
 
         // TODO: PASS COLLISION GROUP FROM ENTITY THAT  GENERATES THE SKILL?
-        std::shared_ptr<CollidableComponent> collider = std::make_shared<CollidableComponent>(
-          *projectil, true, 16 * 4, 16, CollisionGroup::FRIEND);
-        projectil->AddComponent(collider);
+        std::shared_ptr<CollidableComponent> collidable = std::make_shared<CollidableComponent>(
+          *projectil, true, 16 * 4, 16, CollisionGroup::FRIEND, CollisionType::SAT);
+        projectil->AddComponent(collidable);
         std::shared_ptr<DoDamageComponent> damage
           = std::make_shared<DoDamageComponent>(*projectil, 50);
         projectil->AddComponent(damage);
@@ -102,7 +97,7 @@ std::shared_ptr<Entity> SkillGenerator::generateSkill(SkillType a_skill_effect, 
         // desplacement
         auto angle_rad = std::atan2(direction_norm.y, direction_norm.x);
         auto deplacement = (sprite_render->width * sprite_render->scale.x / 2);
-        transform->rotation_z = angle_rad * 180.0 / 3.1415926535;
+        transform->rotation_z = angle_rad;
         transform->position.x = transform->position.x + cos(angle_rad) * deplacement;
         transform->position.y = transform->position.y + sin(angle_rad) * deplacement;
         break;

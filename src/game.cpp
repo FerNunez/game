@@ -66,15 +66,15 @@ Game::Game(SDL_Window* a_window)
         player->AddComponent(transform);
 
         std::shared_ptr<HealthComponent> health
-          = std::make_shared<HealthComponent>(*player, 100, 100);
+          = std::make_shared<HealthComponent>(*player, 1000, 1000);
         player->AddComponent(health);
 
         std::shared_ptr<SquareRenderComponent> square_render
           = std::make_shared<SquareRenderComponent>(*player, true, 16, 16, Color(0, 0, 255));
         player->AddComponent(square_render);
 
-        std::shared_ptr<CollidableComponent> collider
-          = std::make_shared<CollidableComponent>(*player, true, 16, 16, CollisionGroup::FRIEND);
+        std::shared_ptr<CollidableComponent> collider = std::make_shared<CollidableComponent>(
+          *player, true, 16, 16, CollisionGroup::FRIEND, CollisionType::SAT);
         player->AddComponent(collider);
 
         std::shared_ptr<Skill1Component> skill_1
@@ -90,7 +90,7 @@ Game::Game(SDL_Window* a_window)
         player->AddComponent(skill_3);
 
         std::shared_ptr<EnemySpawnerComponent> enemy_spawner
-          = std::make_shared<EnemySpawnerComponent>(*player, 3, 10000);
+          = std::make_shared<EnemySpawnerComponent>(*player, 0, 10000);
         player->AddComponent(enemy_spawner);
 
         entities.push_back(player);
@@ -177,7 +177,7 @@ void Game::Update()
         m_is_running = false;
     }
 
-    std::cout << "Game Updating" << std::endl;
+    //    std::cout << "Game Updating" << std::endl;
 
     /* handle input */
     InputHandler::handleInput();
@@ -230,5 +230,5 @@ void Game::Render()
     // Displaying text
     // Applying visual effects
     // Updating the screen
-    std::cout << "Game Rendering" << std::endl;
+    //    std::cout << "Game Rendering" << std::endl;
 }

@@ -64,10 +64,18 @@ public:
                     continue;
                 }
 
-                if (Collide(transform_component->position,
+                CollisionType collisition_type = CollisionType::AABB;
+                if (collidable_component->collision_type == CollisionType::SAT
+                    || another_collidable_component->collision_type == CollisionType::SAT)
+                {
+                    collisition_type = CollisionType::SAT;
+                }
+
+                if (Collide(collisition_type,
+                            transform_component,
                             collidable_component->width,
                             collidable_component->height,
-                            another_transform_component->position,
+                            another_transform_component,
                             another_collidable_component->width,
                             another_collidable_component->height))
                 {

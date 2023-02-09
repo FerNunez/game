@@ -71,4 +71,15 @@ public:
     {
         return Vec2D(x / scalar, y / scalar);
     }
+
+    // Multiplication operator for Vec2D
+    double dot(const Vec2D& other) const
+    {
+        return this->x * other.x + this->y * other.y;
+    }
+
+    Vec2D perpendicular()
+    {
+        return Vec2D(this->y, -this->x);
+    }
 };

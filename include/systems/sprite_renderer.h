@@ -53,7 +53,7 @@ public:
                              sprite_renderer->sprite_texture,
                              &rect_src,
                              &rect_dest,
-                             transform_component->rotation_z,
+                             transform_component->rotation_z * 180.0 / M_PI,
                              NULL,
                              SDL_FLIP_NONE);
         }

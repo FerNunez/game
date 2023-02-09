@@ -36,7 +36,8 @@ void AI::computeIteration(TransformComponent* a_tranform_component,
         }
         case AIState::COMEBACK:
         default:
-            deplacement = deplacement * (-1);
+            deplacement = deplacement * (-1) + computeRandomVec2DMovement(5);
+
             current_state = AIState::COMEBACK;
             prev_action = AIState::MOVE;
 

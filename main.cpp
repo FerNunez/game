@@ -19,7 +19,7 @@ int main()
     SDL_Window* window = SDL_CreateWindow("My Game",               // window title
                                           SDL_WINDOWPOS_UNDEFINED, // initial x position
                                           SDL_WINDOWPOS_UNDEFINED, // initial y position
-                                          1280,                     // width, in pixels
+                                          1280,                    // width, in pixels
                                           920,                     // height, in pixels
                                           SDL_WINDOW_OPENGL        // flags - see below
     );
@@ -46,11 +46,12 @@ int main()
         }
 
         auto loop_time_duration = std::chrono::steady_clock::now() - start_time_point;
-        std::cout
-          << "FPS: "
-          << 1000.0
-               / std::chrono::duration_cast<std::chrono::milliseconds>(loop_time_duration).count()
-          << std::endl;
+        //        std::cout
+        //          << "FPS: "
+        //          << 1000.0
+        //               /
+        //               std::chrono::duration_cast<std::chrono::milliseconds>(loop_time_duration).count()
+        //          << std::endl;
     }
 
     SDL_DestroyWindow(window);
