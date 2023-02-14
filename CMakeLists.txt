@@ -12,7 +12,8 @@ set(SOURCES
 
   include/common/skills.cpp
   include/common/AI.cpp
-
+  include/helper/collide.h  
+  include/common/state_machine.h  
 )
 
 # Add the include files
@@ -28,6 +29,7 @@ set(INCLUDES
 
   include/common/skills.h
   include/common/AI.h
+  include/common/state_machine.h
 
   include/components/components.h
   include/components/transform.h
@@ -47,6 +49,7 @@ set(INCLUDES
   include/components/enemy_spawner.h
   include/components/destroyable_by_time.h
 
+  include/components/state.h
 
 
   include/components/shield.h

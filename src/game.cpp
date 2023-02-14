@@ -1,8 +1,8 @@
 #include "../include/game.h"
+#include "../include/common/state_machine.h"
+#include "../include/components/components.h"
 #include "../include/game_state.h"
 #include "../include/input_handler.h"
-
-#include "../include/components/components.h"
 #include "../include/systems/systems.h"
 
 #include <SDL.h>
@@ -92,6 +92,10 @@ Game::Game(SDL_Window* a_window)
         std::shared_ptr<EnemySpawnerComponent> enemy_spawner
           = std::make_shared<EnemySpawnerComponent>(*player, 0, 10000);
         player->AddComponent(enemy_spawner);
+
+        std::shared_ptr<StateComponent> state
+          = std::make_shared<StateComponent>(*player, StateBehavior::PLAYER, State::IDLE);
+        player->AddComponent(state);
 
         entities.push_back(player);
     }

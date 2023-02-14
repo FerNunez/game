@@ -7,6 +7,8 @@
 #include "../helper/ecs.h"
 #include "../helper/vec2d.h"
 
+#include "../common/state_machine.h"
+
 class PhysicsSystem : public System
 {
 public:
@@ -19,6 +21,7 @@ public:
         {
             TransformComponent* transform_component = entity->GetComponent<TransformComponent>();
             RigidBodyComponent* rigid_body_component = entity->GetComponent<RigidBodyComponent>();
+            StateComponent* state_component = entity->GetComponent<StateComponent>();
 
             if (transform_component == nullptr)
             {
@@ -31,6 +34,30 @@ public:
 
             transform_component->position
               = transform_component->position + rigid_body_component->velocity * 2 * dt;
+
+            if (rigid_body_component->velocity.x == 0 && rigid_body_component->velocity.y == 0)
+            {
+                StateMachine::enterState(
+                  state_component->state_behavior, state_component->current_behaviorr, State::IDLE);
+            }
+            else
+            {
+                StateMachine::enterState(
+                  state_component->state_behavior, state_component->current_behaviorr, State::WALK);
+
+                if (rigid_body_component->velocity.x != 0)
+                {
+                    // TODO: set direction
+                }
+                else if (rigid_body_component->velocity.y > 0)
+                {
+                    // TODO: set Direction
+                }
+                else if (rigid_body_component->velocity.y < 0)
+                {
+                    // TODO: set Direction
+                }
+            }
         }
     }
 

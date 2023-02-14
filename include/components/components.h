@@ -5,6 +5,7 @@
 #include "collided.h"
 #include "destroyable_after_hit.h"
 #include "destroyable_by_time.h"
+#include "state.h"
 
 #include "do_damage.h"
 #include "health.h"
@@ -16,8 +17,8 @@
 
 #include "enemy_spawner.h"
 
-#include "square_render.h"
 #include "sprite_render.h"
+#include "square_render.h"
 
 #include "skill1.h"
 #include "skill2.h"
