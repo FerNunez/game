@@ -4,6 +4,7 @@
 
 #include "../components/components.h"
 #include "../helper/ecs.h"
+#include "../common/state_machine.h"
 
 class DestroyByTimeSystem : public System
 {
@@ -22,6 +23,8 @@ public:
             SpriteRenderComponent* sprite_render_component
               = entity->GetComponent<SpriteRenderComponent>();
             CollidableComponent* collidable_component = entity->GetComponent<CollidableComponent>();
+
+
 
             if (destroyable_after_time_component == nullptr || collidable_component == nullptr)
             {
@@ -44,6 +47,7 @@ public:
                 {
                     sprite_render_component->visible = false;
                 }
+
             }
         }
     }

@@ -7,6 +7,8 @@
 #include "../game_state.h"
 #include "../helper/ecs.h"
 #include "../helper/vec2d.h"
+#include "../common/state_machine.h"
+
 
 class SkillGeneratorSystem : public System
 {
@@ -25,6 +27,7 @@ public:
             Skill1Component* skill1_component = entity->GetComponent<Skill1Component>();
             Skill2Component* skill2_component = entity->GetComponent<Skill2Component>();
             Skill3Component* skill3_component = entity->GetComponent<Skill3Component>();
+            StateComponent* state_component = entity->GetComponent<StateComponent>();
 
             if (skill1_component == nullptr && skill2_component == nullptr
                 && skill3_component == nullptr)
@@ -86,6 +89,7 @@ public:
                     std::shared_ptr<Entity> projectil = SkillGenerator::generateSkill(
                       skill3_component->skill_type, transform_component->position);
                     m_entities->push_back(projectil);
+                    StateMachine::enterState(state_component->state_behavior, state_component->current_state, State::ATTACK);
                 }
             }
 

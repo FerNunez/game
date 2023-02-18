@@ -36,10 +36,7 @@ public:
             }
             // TODO: CONVERT FROM WOLRD TO IMAGE
 
-            SDL_Rect rect_src = { 0,
-                                  0,
-                                  static_cast<int>(sprite_renderer->width),
-                                  static_cast<int>(sprite_renderer->height) };
+            SDL_Rect rect_src = sprite_renderer->rect_src;
 
             SDL_Rect rect_dest
               = { static_cast<int>(transform_component->position.x
@@ -48,14 +45,15 @@ public:
                                    - sprite_renderer->height * sprite_renderer->scale.y / 2),
                   static_cast<int>(sprite_renderer->width * sprite_renderer->scale.x),
                   static_cast<int>(sprite_renderer->height * sprite_renderer->scale.y) };
-
+            SDL_RendererFlip renderer_flip
+              = (sprite_renderer->flip) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
             SDL_RenderCopyEx(g_game_state.renderer,
                              sprite_renderer->sprite_texture,
                              &rect_src,
                              &rect_dest,
                              transform_component->rotation_z * 180.0 / M_PI,
                              NULL,
-                             SDL_FLIP_NONE);
+                             renderer_flip);
         }
     }
 

@@ -17,6 +17,7 @@
 
 #include "enemy_spawner.h"
 
+#include "animation.h"
 #include "sprite_render.h"
 #include "square_render.h"
 

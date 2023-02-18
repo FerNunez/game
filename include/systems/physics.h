@@ -32,30 +32,56 @@ public:
                 continue;
             }
 
-            transform_component->position
-              = transform_component->position + rigid_body_component->velocity * 2 * dt;
+            if (state_component == nullptr)
+            {
+                transform_component->position
+                  = transform_component->position + rigid_body_component->velocity * 2 * dt;
 
+                continue;
+            }
+
+            // TODO: FIX
+            if (state_component == nullptr)
+            {
+                continue;
+            }
             if (rigid_body_component->velocity.x == 0 && rigid_body_component->velocity.y == 0)
             {
                 StateMachine::enterState(
-                  state_component->state_behavior, state_component->current_behaviorr, State::IDLE);
+                  state_component->state_behavior, state_component->current_state, State::IDLE);
             }
             else
             {
-                StateMachine::enterState(
-                  state_component->state_behavior, state_component->current_behaviorr, State::WALK);
+                if(!StateMachine::enterState(
+                      state_component->state_behavior, state_component->current_state, State::WALK))
+                {continue;}
 
-                if (rigid_body_component->velocity.x != 0)
+                transform_component->position
+                  = transform_component->position + rigid_body_component->velocity * 2 * dt;
+
+                if (rigid_body_component->velocity.x > 0)
                 {
                     // TODO: set direction
+                    StateMachine::setDirection(state_component->facing_direction,
+                                               FacingDirection::RIGHT);
+                }
+                else if (rigid_body_component->velocity.x < 0)
+                {
+                    // TODO: set direction
+                    StateMachine::setDirection(state_component->facing_direction,
+                                               FacingDirection::LEFT);
                 }
                 else if (rigid_body_component->velocity.y > 0)
                 {
                     // TODO: set Direction
+                    StateMachine::setDirection(state_component->facing_direction,
+                                               FacingDirection::DOWN);
                 }
                 else if (rigid_body_component->velocity.y < 0)
                 {
                     // TODO: set Direction
+                    StateMachine::setDirection(state_component->facing_direction,
+                                               FacingDirection::UP);
                 }
             }
         }

@@ -20,11 +20,14 @@ public:
       , width(a_width)
       , height(a_height)
       , scale(a_scale)
+      , flip(false)
     {
 
         SDL_Surface* spriteSurface = IMG_Load(a_sprite_path.c_str());
         sprite_texture = SDL_CreateTextureFromSurface(g_game_state.renderer, spriteSurface);
         SDL_FreeSurface(spriteSurface);
+
+        rect_src = { 0, 0, static_cast<int>(width), static_cast<int>(height) };
     };
 
     ~SpriteRenderComponent()
@@ -38,4 +41,6 @@ public:
     double width;
     double height;
     Vec2D scale;
+    bool flip;
+    SDL_Rect rect_src;
 };

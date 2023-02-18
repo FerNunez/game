@@ -12,8 +12,8 @@ set(SOURCES
 
   include/common/skills.cpp
   include/common/AI.cpp
-  include/helper/collide.h  
-  include/common/state_machine.h  
+  
+  include/common/state_machine.cpp  
 )
 
 # Add the include files
@@ -36,6 +36,7 @@ set(INCLUDES
   include/components/rigid_body.h
   include/components/player.h
 
+  include/components/animation.h
   include/components/square_render.h
   include/components/sprite_render.h
 
@@ -61,6 +62,7 @@ set(INCLUDES
   include/systems/systems.h
   include/systems/physics.h
   include/systems/player_behavior.h
+  include/systems/animator.h
   include/systems/square_renderer.h
   include/systems/sprite_renderer.h
 

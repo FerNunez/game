@@ -69,9 +69,14 @@ Game::Game(SDL_Window* a_window)
           = std::make_shared<HealthComponent>(*player, 1000, 1000);
         player->AddComponent(health);
 
-        std::shared_ptr<SquareRenderComponent> square_render
-          = std::make_shared<SquareRenderComponent>(*player, true, 16, 16, Color(0, 0, 255));
-        player->AddComponent(square_render);
+        //        std::shared_ptr<SquareRenderComponent> square_render
+        //= std::make_shared<SquareRenderComponent>(*player, true, 16, 16, Color(0, 0, 255));
+        // player->AddComponent(square_render);
+
+        std::shared_ptr<SpriteRenderComponent> sprite_render
+          = std::make_shared<SpriteRenderComponent>(
+            *player, true, "../assets/player3.png", 48, 48, Vec2D(2, 2));
+        player->AddComponent(sprite_render);
 
         std::shared_ptr<CollidableComponent> collider = std::make_shared<CollidableComponent>(
           *player, true, 16, 16, CollisionGroup::FRIEND, CollisionType::SAT);
@@ -93,9 +98,13 @@ Game::Game(SDL_Window* a_window)
           = std::make_shared<EnemySpawnerComponent>(*player, 0, 10000);
         player->AddComponent(enemy_spawner);
 
-        std::shared_ptr<StateComponent> state
-          = std::make_shared<StateComponent>(*player, StateBehavior::PLAYER, State::IDLE);
+        std::shared_ptr<StateComponent> state = std::make_shared<StateComponent>(
+          *player, StateBehavior::PLAYER, State::IDLE, FacingDirection::NONE);
         player->AddComponent(state);
+
+        std::shared_ptr<AnimationComponent> animation
+          = std::make_shared<AnimationComponent>(*player);
+        player->AddComponent(animation);
 
         entities.push_back(player);
     }
@@ -155,11 +164,13 @@ Game::Game(SDL_Window* a_window)
     systems_update.push_back(destroy_system);
 
     // SYSTEM RENDER
+    std::shared_ptr<AnimatorSystem> animator_system = std::make_shared<AnimatorSystem>(&entities);
     std::shared_ptr<SquareRendererSystem> square_renderer_system
       = std::make_shared<SquareRendererSystem>(&entities);
     std::shared_ptr<SpriteRendererSystem> sprite_renderer_system
       = std::make_shared<SpriteRendererSystem>(&entities);
 
+    systems_render.push_back(animator_system);
     systems_render.push_back(square_renderer_system);
     systems_render.push_back(sprite_renderer_system);
 
