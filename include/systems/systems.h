@@ -25,3 +25,5 @@
 #include "health_damage.h"
 
 #include "clean.h"
+
+#include "transform_attacher.h"

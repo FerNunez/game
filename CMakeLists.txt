@@ -52,6 +52,7 @@ set(INCLUDES
 
   include/components/state.h
 
+  include/components/transform_attach.h
 
   include/components/shield.h
   include/components/skill1.h
@@ -70,6 +71,7 @@ set(INCLUDES
   include/systems/invulnerability_applier.h
   include/systems/invulnerability_manager.h
   include/systems/enemy_spawning.h
+  include/systems/transform_attacher.h
 
 
 

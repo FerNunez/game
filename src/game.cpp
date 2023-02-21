@@ -70,8 +70,9 @@ Game::Game(SDL_Window* a_window)
         player->AddComponent(health);
 
         //        std::shared_ptr<SquareRenderComponent> square_render
-        //= std::make_shared<SquareRenderComponent>(*player, true, 16, 16, Color(0, 0, 255));
-        // player->AddComponent(square_render);
+        //          = std::make_shared<SquareRenderComponent>(*player, true, 16, 16, Color(0, 0,
+        //          255));
+        //        player->AddComponent(square_render);
 
         std::shared_ptr<SpriteRenderComponent> sprite_render
           = std::make_shared<SpriteRenderComponent>(
@@ -109,6 +110,50 @@ Game::Game(SDL_Window* a_window)
         entities.push_back(player);
     }
 
+    // weqpon
+    std::shared_ptr<Entity> weapon = g_game_state.m_entity_manager.CreateEntity("Weapon");
+    {
+        struct CollisionInfo
+        {
+            int width;
+            int height;
+            int offset_x;
+            int offset_y;
+        };
+
+        struct SpriteInfo
+        {
+            int width;
+            int height;
+            CollisionInfo collision_info;
+            // Sprite
+        } sprite_info;
+
+        std::shared_ptr<RigidBodyComponent> rigid_body
+          = std::make_shared<RigidBodyComponent>(*weapon, Vec2D(0, 0), Vec2D(0, 0));
+        weapon->AddComponent(rigid_body);
+
+        std::shared_ptr<TransformComponent> transform
+          = std::make_shared<TransformComponent>(*weapon, Vec2D(400, 140), 0.0);
+        weapon->AddComponent(transform);
+
+        std::shared_ptr<TransformAttachComponent> transform_attach
+          = std::make_shared<TransformAttachComponent>(
+            *weapon, player.get(), Vec2D(8.0, -20.0), 0, Vec2D(0.0, 0.0), 0);
+        weapon->AddComponent(transform_attach);
+
+        std::shared_ptr<CollidableComponent> collider
+          = std::make_shared<CollidableComponent>(*weapon, true, 16, 16, CollisionGroup::FRIEND);
+        weapon->AddComponent(collider);
+
+        std::shared_ptr<SpriteRenderComponent> sprite_render
+          = std::make_shared<SpriteRenderComponent>(
+            *weapon, true, "../assets/weapons_sheet.png", 48, 48, Vec2D(2, 2));
+        weapon->AddComponent(sprite_render);
+
+        entities.push_back(weapon);
+    }
+
     // SYSTEMS UPDATE
     std::shared_ptr<PlayerBehaviorSystem> player_behavior_system
       = std::make_shared<PlayerBehaviorSystem>(&entities);
@@ -144,6 +189,9 @@ Game::Game(SDL_Window* a_window)
       = std::make_shared<InvurelnabilityManagerSystem>(&entities);
     std::shared_ptr<DestroySystem> destroy_system = std::make_shared<DestroySystem>(&entities);
 
+    std::shared_ptr<TransformAttacherSystem> transform_attacher
+      = std::make_shared<TransformAttacherSystem>(&entities);
+
     systems_update.push_back(player_behavior_system);
     systems_update.push_back(enemy_spawning_system);
 
@@ -151,6 +199,8 @@ Game::Game(SDL_Window* a_window)
 
     systems_update.push_back(skill_generator);
     systems_update.push_back(physics_system);
+    systems_update.push_back(transform_attacher);
+
     systems_update.push_back(collision_system);
     systems_update.push_back(invulnerability_applier);
 
@@ -171,8 +221,8 @@ Game::Game(SDL_Window* a_window)
       = std::make_shared<SpriteRendererSystem>(&entities);
 
     systems_render.push_back(animator_system);
-    systems_render.push_back(square_renderer_system);
     systems_render.push_back(sprite_renderer_system);
+    systems_render.push_back(square_renderer_system);
 
     // Clearer
     std::shared_ptr<CleanerSystem> clean_system = std::make_shared<CleanerSystem>(&entities);
@@ -203,21 +253,6 @@ void Game::Update()
         system->Update(1);
     }
 
-    //    for (auto& entity : entities)
-    //    {
-    //        TransformComponent* transform_component = entity->GetComponent<TransformComponent>();
-    //        if (transform_component == nullptr)
-    //        {
-    //            continue;
-    //        }
-    //        std::cout << "x,y: " << transform_component->position << std::endl;
-
-    //        ColliderComponent* collide_component = entity->GetComponent<ColliderComponent>();
-    //        if (collide_component == nullptr)
-    //        {
-    //            continue;
-    //        }
-    //    }
     //
     // Handling user input
     // Updating the positions of game objects
