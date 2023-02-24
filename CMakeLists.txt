@@ -14,6 +14,8 @@ set(SOURCES
   include/common/AI.cpp
   
   include/common/state_machine.cpp  
+  include/common/bezier.cpp
+  include/common/bezier_builder.cpp
 )
 
 # Add the include files
@@ -23,6 +25,7 @@ set(INCLUDES
   include/input_handler.h
   
   include/helper/vec2d.h
+  include/helper/vector2d.h
   include/helper/ecs.h  
   include/helper/color.h  
   include/helper/collide.h  
@@ -30,6 +33,8 @@ set(INCLUDES
   include/common/skills.h
   include/common/AI.h
   include/common/state_machine.h
+  include/common/bezier.h
+  include/common/bezier_builder.h
 
   include/components/components.h
   include/components/transform.h
@@ -49,6 +54,8 @@ set(INCLUDES
   include/components/invulnerability.h
   include/components/enemy_spawner.h
   include/components/destroyable_by_time.h
+  include/components/trajectory_follow.h
+
 
   include/components/state.h
 
@@ -81,7 +88,7 @@ set(INCLUDES
   include/systems/health_damage.h
   include/systems/destroy_after_hit.h
   include/systems/destroying_by_time.h
-
+  include/systems/trajectory_follower.h
 
   include/systems/clean.h
 

@@ -26,4 +26,5 @@
 
 #include "clean.h"
 
+#include "trajectory_follower.h"
 #include "transform_attacher.h"

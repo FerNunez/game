@@ -1,7 +1,10 @@
 #include "../include/game.h"
+#include "../include/common/bezier.h"
+#include "../include/common/bezier_builder.h"
 #include "../include/common/state_machine.h"
 #include "../include/components/components.h"
 #include "../include/game_state.h"
+#include "../include/helper/vector2d.h"
 #include "../include/input_handler.h"
 #include "../include/systems/systems.h"
 
@@ -20,6 +23,21 @@ Game::Game(SDL_Window* a_window)
     {
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
     }
+
+    // BezierCurve
+
+    //        BezierBuilder::generateCurveEnties(entities,
+    //                                           500,
+    //                                           vec2f(0.0f, 500.0f),
+    //                                           vec2f(0.0f, 0.0f),
+    //                                           vec2f(500.0f, 1000.0f),
+    //                                           vec2f(500.0f, 500.0f));
+
+    std::vector<float> T = Bezier::computeT(500, TrajectoryVelocityType::LINEAL);
+    Trajectory trajectory = Bezier::computeTrajectory(
+      T, vec2f(0.0f, 500.0f), vec2f(0.0f, 0.0f), vec2f(500.0f, 1000.0f), vec2f(500.0f, 500.0f));
+
+    BezierBuilder::createEntityTrajectory(entities, trajectory, vec2i(2, 2), Color(0, 255, 0));
 
     /* Entities and components */
     // enemys
@@ -129,18 +147,22 @@ Game::Game(SDL_Window* a_window)
             // Sprite
         } sprite_info;
 
-        std::shared_ptr<RigidBodyComponent> rigid_body
-          = std::make_shared<RigidBodyComponent>(*weapon, Vec2D(0, 0), Vec2D(0, 0));
-        weapon->AddComponent(rigid_body);
+        //        std::shared_ptr<RigidBodyComponent> rigid_body
+        //          = std::make_shared<RigidBodyComponent>(*weapon, Vec2D(0, 0), Vec2D(0, 0));
+        //        weapon->AddComponent(rigid_body);
 
         std::shared_ptr<TransformComponent> transform
           = std::make_shared<TransformComponent>(*weapon, Vec2D(400, 140), 0.0);
         weapon->AddComponent(transform);
 
-        std::shared_ptr<TransformAttachComponent> transform_attach
-          = std::make_shared<TransformAttachComponent>(
-            *weapon, player.get(), Vec2D(8.0, -20.0), 0, Vec2D(0.0, 0.0), 0);
-        weapon->AddComponent(transform_attach);
+        std::shared_ptr<TrajectoryFollowComponent> trajectory_follow
+          = std::make_shared<TrajectoryFollowComponent>(*weapon, trajectory, 10000);
+        weapon->AddComponent(trajectory_follow);
+
+        //        std::shared_ptr<TransformAttachComponent> transform_attach
+        //          = std::make_shared<TransformAttachComponent>(
+        //            *weapon, player.get(), Vec2D(8.0, -20.0), 0, Vec2D(0.0, 0.0), 0);
+        //        weapon->AddComponent(transform_attach);
 
         std::shared_ptr<CollidableComponent> collider
           = std::make_shared<CollidableComponent>(*weapon, true, 16, 16, CollisionGroup::FRIEND);
@@ -192,6 +214,9 @@ Game::Game(SDL_Window* a_window)
     std::shared_ptr<TransformAttacherSystem> transform_attacher
       = std::make_shared<TransformAttacherSystem>(&entities);
 
+    std::shared_ptr<TrajectoryFollowerSystem> trajectory_follower
+      = std::make_shared<TrajectoryFollowerSystem>(&entities);
+
     systems_update.push_back(player_behavior_system);
     systems_update.push_back(enemy_spawning_system);
 
@@ -200,6 +225,7 @@ Game::Game(SDL_Window* a_window)
     systems_update.push_back(skill_generator);
     systems_update.push_back(physics_system);
     systems_update.push_back(transform_attacher);
+    systems_update.push_back(trajectory_follower);
 
     systems_update.push_back(collision_system);
     systems_update.push_back(invulnerability_applier);

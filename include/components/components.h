@@ -26,3 +26,5 @@
 #include "skill3.h"
 #include "skill4.h"
 #include "transform_attach.h"
+
+#include "trajectory_follow.h"
