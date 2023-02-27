@@ -5,16 +5,26 @@
 enum class TrajectoryVelocityType
 {
     LINEAL,
-    QUADRATIC,         // x^2
-    QUADRATIC_INVERSAL // -x^2
+    QUADRATIC,          // x^2
+    QUADRATIC_INVERSAL, // -x^2
+    CUBIC
 };
 
-struct Trajectory
+struct TrajectoryPoint
 {
-    std::vector<vec2f> points;
-    std::vector<vec2f> tangents_vector;
-    std::vector<vec2f> perpendicular_vector;
+    TrajectoryPoint()
+      : points(vec2f())
+      , tangents_vector(vec2f())
+      , perpendicular_vector(vec2f())
+
+    {
+    }
+    vec2f points;
+    vec2f tangents_vector;
+    vec2f perpendicular_vector;
 };
+
+typedef std::vector<TrajectoryPoint> Trajectory;
 
 class Bezier
 {

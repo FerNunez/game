@@ -4,7 +4,7 @@
 #include "../helper/ecs.h"
 #include "../helper/vector2d.h"
 
-struct Trajectory;
+#include "bezier.h"
 
 class BezierBuilder
 {

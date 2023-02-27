@@ -24,9 +24,9 @@ void BezierBuilder::generateCurveEnties(std::vector<std::shared_ptr<Entity>>& en
     entity_output.push_back(
       BezierBuilder::createEntityCurvePoint(p3, vec2i(4, 4), Color(255, 0, 0)));
 
-    for (int i(0); i < trajectory.points.size(); i++)
+    for (int i(0); i < trajectory.size(); i++)
     {
-        auto point = trajectory.points[i];
+        auto point = trajectory[i].points;
         //        auto tangents_vector = trajectory.tangents_vector[i];
         //        auto perpendicular_vector = trajectory.perpendicular_vector[i];
 
@@ -58,14 +58,16 @@ void BezierBuilder::createEntityTrajectory(std::vector<std::shared_ptr<Entity>>&
                                            const vec2i& size,
                                            const Color& color)
 {
-    for (int i(0); i < trajectory.points.size(); i++)
+    for (int i(0); i < trajectory.size(); i++)
     {
-        auto point = trajectory.points[i];
+        auto point = trajectory[i].points;
+        point.x += 500;
+        point.y += 500;
         //        auto tangents_vector = trajectory.tangents_vector[i];
         //        auto perpendicular_vector = trajectory.perpendicular_vector[i];
 
         std::shared_ptr<Entity> entity_point
-          = BezierBuilder::createEntityCurvePoint(point, vec2i(2, 2), Color(0, 255, 0));
+          = BezierBuilder::createEntityCurvePoint(point, size, color);
         entity_output.push_back(entity_point);
     }
 }

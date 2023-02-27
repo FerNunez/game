@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "../helper/ecs.h"
-#include "../helper/vec2d.h"
 
 class CollidedComponent : public Component
 {

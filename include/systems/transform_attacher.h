@@ -43,9 +43,37 @@ public:
                 continue;
             }
 
+            if (transform_attach->attach_type == AttachType::ANCHRED)
+            {
+                transform_component->position.x = 0;
+                transform_component->position.y = 0;
+                transform_component->rotation_z = 0;
+            }
+
             // TODO: relative movement
-            transform_component->position
-              = attach_transform_component->position + transform_attach->position_offset;
+            transform_component->rotation_z
+              += attach_transform_component->rotation_z + transform_attach->rotation_z_offset;
+
+            //            transform_component->position
+            //              = attach_transform_component->position +
+            //              transform_attach->position_offset;
+
+            auto cos_angle = cos(transform_component->rotation_z);
+            auto sin_angle = sin(transform_component->rotation_z);
+
+            transform_component->position.x += attach_transform_component->position.x
+                                               + cos_angle * transform_attach->position_offset.x
+                                               - sin_angle * transform_attach->position_offset.y;
+
+            transform_component->position.y += attach_transform_component->position.y
+                                               + sin_angle * transform_attach->position_offset.x
+                                               + cos_angle * transform_attach->position_offset.y;
+
+            //            setRotationAngle(element, angle, x, y):
+            //              setRotationAngle(element, angle)
+            //              step_x = cos(angle) * (element.x - x) - sin(angle) * (element.y - y)
+            //              step_y = sin(angle) * (element.x - x) + cos(angle) * (element.y - y)
+            //              moveElement(element, step_x, step_y)
         }
     }
 

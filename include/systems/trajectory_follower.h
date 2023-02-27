@@ -37,19 +37,31 @@ public:
                   .count();
             if (time_passed_ms < trajectory_follow_component->duration_ms)
             {
-                float step_duration
-                  = static_cast<float>(trajectory_follow_component->duration_ms
-                                       / trajectory_follow_component->trajetory_size);
+                float step_duration = static_cast<float>(trajectory_follow_component->duration_ms)
+                                      / trajectory_follow_component->trajetory_size;
+
                 std::uint64_t idx = static_cast<std::uint64_t>(time_passed_ms / step_duration);
 
                 transform_component->position.x
-                  = trajectory_follow_component->trajectory.points[idx].x;
+                  = trajectory_follow_component->trajectory[idx].points.x;
                 transform_component->position.y
-                  = trajectory_follow_component->trajectory.points[idx].y;
+                  = trajectory_follow_component->trajectory[idx].points.y;
 
                 transform_component->rotation_z
-                  = atan2(trajectory_follow_component->trajectory.tangents_vector[idx].y,
-                          trajectory_follow_component->trajectory.tangents_vector[idx].x);
+                  = atan2(trajectory_follow_component->trajectory[idx].tangents_vector.y,
+                          trajectory_follow_component->trajectory[idx].tangents_vector.x);
+            }
+            else
+            {
+                auto last_element_idx = trajectory_follow_component->trajectory.size() - 1;
+                transform_component->position.x
+                  = trajectory_follow_component->trajectory[last_element_idx].points.x;
+                transform_component->position.y
+                  = trajectory_follow_component->trajectory[last_element_idx].points.y;
+
+                transform_component->rotation_z = atan2(
+                  trajectory_follow_component->trajectory[last_element_idx].tangents_vector.y,
+                  trajectory_follow_component->trajectory[last_element_idx].tangents_vector.x);
             }
         }
     }

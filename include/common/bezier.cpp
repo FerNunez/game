@@ -23,15 +23,18 @@ Trajectory Bezier::computeTrajectory(const std::vector<float>& T,
         p = p + (3 * u * tt) * p2;
         p = p + (ttt * p3);
 
-        bezier_trajectory.points.push_back(p);
+        TrajectoryPoint tp;
+        tp.points = p;
 
         vec2f p_dot = (-3 * tt + 6 * t - 3) * p0;
         p_dot = p_dot + (9 * tt - 12 * t + 3) * p1;
         p_dot = p_dot + (-9 * tt + 6 * t) * p2;
         p_dot = p_dot + (3 * tt) * p3;
 
-        bezier_trajectory.tangents_vector.push_back(p_dot);
-        bezier_trajectory.perpendicular_vector.push_back(perpendicularVector(p_dot));
+        tp.tangents_vector = p_dot;
+        tp.perpendicular_vector = perpendicularVector(p_dot);
+
+        bezier_trajectory.push_back(tp);
     }
 
     return bezier_trajectory;
@@ -42,16 +45,47 @@ std::vector<float> Bezier::computeT(int number_sengments,
 
 {
     std::vector<float> T;
+    float acum = 0;
+    float acm = 0;
     switch (a_trayectory_velicity)
     {
 
     case TrajectoryVelocityType::LINEAL:
         for (int i(0); i < number_sengments + 1; i++)
         {
-            T.push_back(static_cast<float>(i) / number_sengments);
+            float x = static_cast<float>(i) / number_sengments;
+            T.push_back(x);
         }
         break;
+    case TrajectoryVelocityType::QUADRATIC:
+        for (int i(0); i < number_sengments + 1; i++)
+        {
+            float x = (static_cast<float>(i - 1) / number_sengments);
+            T.push_back(x * x);
+        }
+        break;
+    case TrajectoryVelocityType::CUBIC:
+        while (T.size() <= number_sengments)
+        {
+
+            float x = (acum - 0.5) * (acum - 0.5) / (0.5 * 0.5);
+            acum += 1.0f / number_sengments;
+            T.push_back(x);
+            std::cout << "x: " << x << std::endl;
+        }
+        for (auto el : T)
+        {
+            acm += el;
+        }
+        for (auto& el : T)
+        {
+            el /= acm * 1 / number_sengments;
+            std::cout << "el: " << el << std::endl;
+        }
+
+        break;
     default:
+
         break;
     }
     return T;

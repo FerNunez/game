@@ -33,11 +33,43 @@ Game::Game(SDL_Window* a_window)
     //                                           vec2f(500.0f, 1000.0f),
     //                                           vec2f(500.0f, 500.0f));
 
-    std::vector<float> T = Bezier::computeT(500, TrajectoryVelocityType::LINEAL);
+    std::vector<float> T = Bezier::computeT(50, TrajectoryVelocityType::QUADRATIC);
     Trajectory trajectory = Bezier::computeTrajectory(
-      T, vec2f(0.0f, 500.0f), vec2f(0.0f, 0.0f), vec2f(500.0f, 1000.0f), vec2f(500.0f, 500.0f));
+      T, vec2f(-5.0f, 0.0f), vec2f(-5.0f, -5.0f), vec2f(5.0f, -5.0f), vec2f(5.0f, 0.0f));
 
-    BezierBuilder::createEntityTrajectory(entities, trajectory, vec2i(2, 2), Color(0, 255, 0));
+    Trajectory trajectory2 = Bezier::computeTrajectory(
+      T, vec2f(5.0f, 0.0f), vec2f(5.0f, 5.0f), vec2f(-5.0f, 5.0f), vec2f(-5.0f, 0.0f));
+
+    //    BezierBuilder::createEntityTrajectory(entities, trajectory, vec2i(2, 2), Color(0, 255,
+    //    0));
+
+    {
+        std::vector<float> T = Bezier::computeT(50, TrajectoryVelocityType::LINEAL);
+        Trajectory trajectory = Bezier::computeTrajectory(T,
+                                                          vec2f(-50.0f, 00.0f),
+                                                          vec2f(-50.0f, -50.0f),
+                                                          vec2f(50.0f, -50.0f),
+                                                          vec2f(50.0f, 00.0f));
+        BezierBuilder::createEntityTrajectory(entities, trajectory, vec2i(2, 2), Color(0, 255, 0));
+    }
+
+    {
+        std::vector<float> T = Bezier::computeT(50, TrajectoryVelocityType::LINEAL);
+        Trajectory trajectory = Bezier::computeTrajectory(
+          T, vec2f(-50.0f, 00.0f), vec2f(-50.0f, 50.0f), vec2f(50.0f, 50.0f), vec2f(50.0f, 00.0f));
+
+        BezierBuilder::createEntityTrajectory(entities, trajectory, vec2i(2, 2), Color(255, 0, 0));
+    }
+    Trajectory trajectoryTraj;
+    for (auto traj_point : trajectory)
+    {
+        trajectoryTraj.push_back(traj_point);
+    }
+
+    for (auto traj_point : trajectory2)
+    {
+        trajectoryTraj.push_back(traj_point);
+    }
 
     /* Entities and components */
     // enemys
@@ -87,10 +119,9 @@ Game::Game(SDL_Window* a_window)
           = std::make_shared<HealthComponent>(*player, 1000, 1000);
         player->AddComponent(health);
 
-        //        std::shared_ptr<SquareRenderComponent> square_render
-        //          = std::make_shared<SquareRenderComponent>(*player, true, 16, 16, Color(0, 0,
-        //          255));
-        //        player->AddComponent(square_render);
+        std::shared_ptr<SquareRenderComponent> square_render
+          = std::make_shared<SquareRenderComponent>(*player, true, 18, 32, Color(0, 0, 255));
+        player->AddComponent(square_render);
 
         std::shared_ptr<SpriteRenderComponent> sprite_render
           = std::make_shared<SpriteRenderComponent>(
@@ -98,7 +129,7 @@ Game::Game(SDL_Window* a_window)
         player->AddComponent(sprite_render);
 
         std::shared_ptr<CollidableComponent> collider = std::make_shared<CollidableComponent>(
-          *player, true, 16, 16, CollisionGroup::FRIEND, CollisionType::SAT);
+          *player, true, 18, 32, CollisionGroup::FRIEND, CollisionType::SAT);
         player->AddComponent(collider);
 
         std::shared_ptr<Skill1Component> skill_1
@@ -128,50 +159,60 @@ Game::Game(SDL_Window* a_window)
         entities.push_back(player);
     }
 
-    // weqpon
-    std::shared_ptr<Entity> weapon = g_game_state.m_entity_manager.CreateEntity("Weapon");
+    // hand
+    std::shared_ptr<Entity> hand = g_game_state.m_entity_manager.CreateEntity("Hand");
     {
-        struct CollisionInfo
-        {
-            int width;
-            int height;
-            int offset_x;
-            int offset_y;
-        };
+        std::shared_ptr<TransformComponent> transform = std::make_shared<TransformComponent>(
+          *hand, Vec2D(400, 400), 0.0 /*, TransformationType::RELATIVE*/);
+        hand->AddComponent(transform);
 
-        struct SpriteInfo
-        {
-            int width;
-            int height;
-            CollisionInfo collision_info;
-            // Sprite
-        } sprite_info;
-
-        //        std::shared_ptr<RigidBodyComponent> rigid_body
-        //          = std::make_shared<RigidBodyComponent>(*weapon, Vec2D(0, 0), Vec2D(0, 0));
-        //        weapon->AddComponent(rigid_body);
-
-        std::shared_ptr<TransformComponent> transform
-          = std::make_shared<TransformComponent>(*weapon, Vec2D(400, 140), 0.0);
-        weapon->AddComponent(transform);
+        std::shared_ptr<SpriteRenderComponent> sprite_render
+          = std::make_shared<SpriteRenderComponent>(
+            *hand, true, "../assets/Hand_4x4.png", 4, 4, Vec2D(2, 2));
+        hand->AddComponent(sprite_render);
 
         std::shared_ptr<TrajectoryFollowComponent> trajectory_follow
-          = std::make_shared<TrajectoryFollowComponent>(*weapon, trajectory, 10000);
-        weapon->AddComponent(trajectory_follow);
+          = std::make_shared<TrajectoryFollowComponent>(*hand, trajectoryTraj, 2500);
+        hand->AddComponent(trajectory_follow);
 
-        //        std::shared_ptr<TransformAttachComponent> transform_attach
-        //          = std::make_shared<TransformAttachComponent>(
-        //            *weapon, player.get(), Vec2D(8.0, -20.0), 0, Vec2D(0.0, 0.0), 0);
-        //        weapon->AddComponent(transform_attach);
+        std::shared_ptr<TransformAttachComponent> transform_attach
+          = std::make_shared<TransformAttachComponent>(
+            *hand, player.get(), Vec2D(20.0, 0.0), 0, AttachType::PIVOTING);
+        hand->AddComponent(transform_attach);
 
-        std::shared_ptr<CollidableComponent> collider
-          = std::make_shared<CollidableComponent>(*weapon, true, 16, 16, CollisionGroup::FRIEND);
+        entities.push_back(hand);
+    }
+
+    // weapon
+    std::shared_ptr<Entity> weapon = g_game_state.m_entity_manager.CreateEntity("Weapon");
+    {
+        // WEAPON
+        // TransformComponent: position, rotation
+        // TransformAttachComponent: attached_to, offset_poition offset angle
+        // Collider: collision (width, height), Collision group, [CollisionType]
+        // Sprite: path, width, height, size(x,y)
+
+        std::shared_ptr<TransformComponent> transform
+          = std::make_shared<TransformComponent>(*weapon, Vec2D(0, 0), 0.0);
+        weapon->AddComponent(transform);
+
+        std::shared_ptr<TransformAttachComponent> transform_attach
+          = std::make_shared<TransformAttachComponent>(
+            *weapon, hand.get(), Vec2D(0.0, -35.0), 0, AttachType::ANCHRED);
+        weapon->AddComponent(transform_attach);
+
+        std::shared_ptr<CollidableComponent> collider = std::make_shared<CollidableComponent>(
+          *weapon, true, 14 * 2, 40 * 2, CollisionGroup::FRIEND, CollisionType::SAT);
         weapon->AddComponent(collider);
 
         std::shared_ptr<SpriteRenderComponent> sprite_render
           = std::make_shared<SpriteRenderComponent>(
             *weapon, true, "../assets/weapons_sheet.png", 48, 48, Vec2D(2, 2));
         weapon->AddComponent(sprite_render);
+
+        // attached then moved
+        //        std::shared_ptr<DoDamageComponent> damage =
+        //        std::make_shared<DoDamageComponent>(*hand, 10); hand->AddComponent(damage);
 
         entities.push_back(weapon);
     }
@@ -224,8 +265,9 @@ Game::Game(SDL_Window* a_window)
 
     systems_update.push_back(skill_generator);
     systems_update.push_back(physics_system);
-    systems_update.push_back(transform_attacher);
+
     systems_update.push_back(trajectory_follower);
+    systems_update.push_back(transform_attacher);
 
     systems_update.push_back(collision_system);
     systems_update.push_back(invulnerability_applier);

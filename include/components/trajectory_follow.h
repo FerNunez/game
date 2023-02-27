@@ -15,7 +15,7 @@ public:
       , duration_ms(a_duration_ms)
       , init_time(std::chrono::steady_clock::now())
     {
-        trajetory_size = a_trajectory.points.size();
+        trajetory_size = a_trajectory.size();
     };
 
     Trajectory trajectory;

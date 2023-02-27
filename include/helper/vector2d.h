@@ -10,7 +10,8 @@ class Vector2d
 public:
     // Constructor to initialize the vector
     Vector2d()
-      : x(T(0), y(0))
+      : x(T(0))
+      , y(T(0))
     {
     }
 
@@ -22,6 +23,12 @@ public:
 
     T x;
     T y;
+
+    friend std::ostream& operator<<(std::ostream& os, const Vector2d& v)
+    {
+        os << "(" << v.x << ", " << v.y << ")";
+        return os;
+    }
 
     // operators (= something)
     Vector2d& operator+=(const Vector2d& v)

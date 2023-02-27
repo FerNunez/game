@@ -35,6 +35,7 @@ set(INCLUDES
   include/common/state_machine.h
   include/common/bezier.h
   include/common/bezier_builder.h
+  include/common/melee_attack.h
 
   include/components/components.h
   include/components/transform.h

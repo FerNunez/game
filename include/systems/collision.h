@@ -47,7 +47,7 @@ public:
                 {
                     continue;
                 }
-                if (another_transform_component == nullptr)
+                if (another_collidable_component == nullptr)
                 {
                     continue;
                 }
@@ -79,6 +79,8 @@ public:
                             another_collidable_component->width,
                             another_collidable_component->height))
                 {
+                    std::cout << "Collision " << entity->name() << " with "
+                              << another_entity->name() << std::endl;
                     if (collided_component == nullptr)
                     {
                         std::shared_ptr<CollidedComponent> collided
